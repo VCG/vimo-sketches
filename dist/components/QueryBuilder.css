@@ -1,0 +1,17 @@
+.group--actions button:last-child {
+    display: none;
+
+}
+
+.group--actions {
+    opacity: 1 !important;
+}
+
+.group-or-rule-container {
+    padding: 0 !important;
+}
+
+.group-or-rule {
+    background: none !important;
+    border: none !important;
+}
