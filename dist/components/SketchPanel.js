@@ -21,7 +21,6 @@ var _reactFontawesome = require("@fortawesome/react-fontawesome");
 var _freeSolidSvgIcons = require("@fortawesome/free-solid-svg-icons");
 var _reactAwesomeQueryBuilder = require("react-awesome-query-builder");
 var _axios = _interopRequireDefault(require("axios"));
-var _edge = require("../utils/edge");
 var _mui = _interopRequireDefault(require("react-awesome-query-builder/lib/config/mui"));
 var _NodeFields = require("../config/NodeFields");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

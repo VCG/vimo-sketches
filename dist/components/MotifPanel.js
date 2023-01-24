@@ -49,10 +49,6 @@ function MotifPanel(_ref) {
     _useState8 = _slicedToArray(_useState7, 2),
     enableAbsMotifCountInfo = _useState8[0],
     setEnableAbsMotifCountInfo = _useState8[1];
-  var _React$useState = _react.default.useState(0),
-    _React$useState2 = _slicedToArray(_React$useState, 2),
-    selectedTab = _React$useState2[0],
-    setSelectedTab = _React$useState2[1];
   var _useState9 = (0, _react.useState)("neutral"),
     _useState10 = _slicedToArray(_useState9, 2),
     countButtonColor = _useState10[0],

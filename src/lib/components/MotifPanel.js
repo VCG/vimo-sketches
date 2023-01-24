@@ -19,7 +19,6 @@ function MotifPanel({token}) {
   const [searchedMotifs, setSearchedMotifs] = useState({});
   const [resultRows, setResultRows] = useState([]);
   const [enableAbsMotifCountInfo, setEnableAbsMotifCountInfo] = useState(false);
-  const [selectedTab, setSelectedTab] = React.useState(0);
   const [countButtonColor, setCountButtonColor] = useState("neutral");
   const [searched, setSearched] = useState(false);
 
