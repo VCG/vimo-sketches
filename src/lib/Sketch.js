@@ -5,12 +5,12 @@ import { ContextWrapper } from "./contexts/GlobalContext";
 
 function Sketch(props) {
   // Wrap things in context that can use global context
-  const {token} = props;
+  const {data_server, data_version, token} = props;
   return (
     <ContextWrapper>
       <div>
         <Banner></Banner>
-        <PanelView token={token} />
+        <PanelView data_server={data_server} data_version={data_version} token={token} />
       </div>
     </ContextWrapper>
     // <span>testtesttest</span>

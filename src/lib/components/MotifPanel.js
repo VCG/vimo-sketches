@@ -14,7 +14,8 @@ import { mapQueryResult } from "../utils/rendering";
 import { Color } from "../utils/rendering";
 import Tooltip from "@mui/material/Tooltip";
 
-function MotifPanel({token}) {
+function MotifPanel(props) {
+  const {data_server, data_version, token} = props;
   const [number, setNumber] = useState(1);
   const [searchedMotifs, setSearchedMotifs] = useState({});
   const [resultRows, setResultRows] = useState([]);
@@ -35,7 +36,7 @@ function MotifPanel({token}) {
     context.setLoadingMessage("Searching for Motifs");
     context.setErrorMessage(null);
     try {
-      const motifs = await queryMotifs(context.motifQuery, number, token);
+      const motifs = await queryMotifs(context.motifQuery, number, data_server, data_version, token);
       context.setLoadingMessage(null);
       setSearchedMotifs(motifs);
       setSearched(true);

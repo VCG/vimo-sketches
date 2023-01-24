@@ -1,14 +1,17 @@
 {
-  "name": "vimo-sketches",
+  "name": "@vimo-public/vimo-sketches",
   "version": "0.1.0",
   "private": false,
   "main": "dist/index.js",
   "module": "dist/index.js",
-  "files": [ "dist", "README.md" ],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "author": "VCG",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/VCG/vimo-server.git"
+    "url": "git+https://github.com/VCG/vimo-sketches.git"
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
@@ -70,5 +73,12 @@
     "@babel/cli": "^7.20.7",
     "@babel/core": "^7.20.12",
     "@babel/preset-env": "^7.20.2"
-  }
+  },
+  "description": "A React component of the Vimo Sketching interface.",
+  "keywords": [
+    "motifs",
+    "connectomics",
+    "visualization"
+  ],
+  "license": "MIT"
 }

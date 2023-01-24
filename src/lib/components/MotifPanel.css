@@ -2,8 +2,8 @@
     position: absolute;
     top: 5vh;
     left: 1vw;
-    max-width: 500px;
-    width: 29vw;
+    /*max-width: 500px;*/
+    width: inherit;
     margin: 20px;
     padding: 0;
     /*max-height: 86vh;*/
