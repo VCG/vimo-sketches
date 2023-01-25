@@ -1,9 +1,0 @@
-/*hint style*/
-.hint {
-    display: flex;
-    flex-direction: column;
-    width: inherit;
-    color: #a4a4a4;
-    align-items: center;
-    margin: 5px 5px 0 5px;
-}

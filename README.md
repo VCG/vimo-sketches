@@ -54,9 +54,3 @@ This is an example of the search results.
   }
 ]
 ```
-
-## Deployment to npm 
-
-```
-TODO jinhan
-```
