@@ -41,7 +41,6 @@ export const ContextWrapper = (props) => {
 
   const [highlightColor, setHighlightColor] = useState("#0000ff");
 
-  const [loadingMessage, setLoadingMessage] = useState();
   const [errorMessage, setErrorMessage] = useState();
   const [selectedSketchElement, setSelectedSketchElement] = useState(null);
   const [resetUICounter, setResetUICounter] = useState(0);
@@ -75,8 +74,6 @@ export const ContextWrapper = (props) => {
         setMotifQuery,
         abstractionLevel,
         setAbstractionLevel,
-        loadingMessage,
-        setLoadingMessage,
         neuronColors,
         setNeuronColors,
         synapseColors,

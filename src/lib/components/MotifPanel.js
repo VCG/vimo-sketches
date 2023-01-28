@@ -9,19 +9,15 @@ import Button from "@mui/material/Button";
 import { FormControl, TextField, ThemeProvider } from "@mui/material";
 import _ from "lodash";
 import InfoButton from "./InfoButton";
-import { queryMotifs } from "../services/data";
-import { mapQueryResult } from "../utils/rendering";
+import { getCypherQuery } from "../services/data";
 import { Color } from "../utils/rendering";
 import Tooltip from "@mui/material/Tooltip";
 
 function MotifPanel(props) {
-  const {data_server, data_version, token} = props;
+  const {data_server, data_version, token, isQuerying, processRequest} = props;
   const [number, setNumber] = useState(1);
-  const [searchedMotifs, setSearchedMotifs] = useState({});
-  const [resultRows, setResultRows] = useState([]);
   const [enableAbsMotifCountInfo, setEnableAbsMotifCountInfo] = useState(false);
   const [countButtonColor, setCountButtonColor] = useState("neutral");
-  const [searched, setSearched] = useState(false);
 
   const motifPanelId = "motif-panel-div";
   const context = useContext(AppContext);
@@ -31,21 +27,20 @@ function MotifPanel(props) {
     return fetchMotifs();
   };
 
+
   const fetchMotifs = async () => {
     console.log("Fetch Motifs");
-    context.setLoadingMessage("Searching for Motifs");
     context.setErrorMessage(null);
     try {
-      const motifs = await queryMotifs(context.motifQuery, number, data_server, data_version, token);
-      context.setLoadingMessage(null);
-      setSearchedMotifs(motifs);
-      setSearched(true);
+      const query = await getCypherQuery(data_server, data_version, token, context.motifQuery, number)
+      // setCypherQuery(query);
+      processRequest(query)
     } catch (e) {
       console.log(e);
       context.setErrorMessage(e.message);
-      context.setLoadingMessage(null);
     }
   };
+
 
   const getMotifCountAsString = () => {
     if (context.absMotifCount) {
@@ -87,18 +82,6 @@ function MotifPanel(props) {
       setCountButtonColor("neutral");
     }
   }, [context.relativeMotifCount]);
-
-  useEffect(() => {
-    if (searchedMotifs && searchedMotifs?.length > 0) {
-      let rows = searchedMotifs.map((motif, j) => {
-        return mapQueryResult(motif, j);
-      });
-      setResultRows(rows);
-      console.log(rows)
-    } else {
-      setResultRows([]);
-    }
-  }, [searchedMotifs]);
 
   // catch change in context absmotifcount
   useEffect(() => {
@@ -159,6 +142,7 @@ function MotifPanel(props) {
                 variant="contained"
                 startIcon={<SearchIcon />}
                 onClick={handleSubmit}
+                disabled={isQuerying}
               >
                 Search
               </Button>

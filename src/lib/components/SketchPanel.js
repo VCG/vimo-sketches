@@ -820,12 +820,12 @@ function SketchPanel() {
           newEdges.push(newEdge);
         });
         context.setErrorMessage(null);
-        context.setLoadingMessage(null);
+        // context.setLoadingMessage(null);
       } catch (TypeError) {
         context.setErrorMessage(
           "The motif can't import. Please try again in a larger window."
         );
-        context.setLoadingMessage(null);
+        // context.setLoadingMessage(null);
         clearSketch();
       }
 

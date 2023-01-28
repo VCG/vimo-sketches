@@ -1,12 +1,7 @@
 #motif-panel-div {
-    position: absolute;
-    top: 5vh;
-    left: 1vw;
-    /*max-width: 500px;*/
-    width: inherit;
+    position: relative;
     margin: 20px;
     padding: 0;
-    /*max-height: 86vh;*/
 }
 
 
