@@ -7,9 +7,10 @@ function Sketch(props) {
   // Props: data_server, data_version, token, isQuerying, processReauest
   return (
     <ContextWrapper>
-      <div>
+      {/*<div style={{marginTop: "500px"}}>*/}
         <PanelView {...props} />
-      </div>
+        {/*{"abc"}*/}
+      {/*</div>*/}
     </ContextWrapper>
   );
 }

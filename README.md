@@ -13,7 +13,7 @@ import { Sketch } from '@vimo-public/vimo-sketches';
 ```
 
 ```javascript
-<Sketch data_server={data_server} data_version={data_version} token={token} isQuerying={isQuerying} processRequest={processRequest}/>
+<Sketch vimo_server={vimo_server} data_server={data_server} data_version={data_version} token={token} isQuerying={isQuerying} processRequest={processRequest}/>
 ```
 
 
@@ -25,6 +25,7 @@ import { Sketch } from '@vimo-public/vimo-sketches';
 | data_version          | name and version of dataset (e.g., 'hemibrain:v1.2.1')  | String   |
 | isQuerying            | enable/disable search button                            | Boolean  |
 | processRequest(query) | callback function for search button                     | Function |
+ | vimo_server | url of vimo_server | String |
 
 * Token can be found in [here](https://neuprint.janelia.org/account).
 

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import "./SketchPanel.css";
+import classes from "./SketchPanel.module.css";
 import QueryBuilder from "./QueryBuilder";
 import CircleTwoToneIcon from "@mui/icons-material/CircleTwoTone";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
@@ -30,7 +30,8 @@ InitialConfig["settings"]["canReorder"] = false;
 InitialConfig["settings"]["renderSize"] = "small";
 InitialConfig["settings"]["setOpOnChangeField"] = ["keep", "first"];
 
-function SketchPanel() {
+function SketchPanel(props) {
+  const { vimo_server } = props
   const sketchPanelId = "sketch-panel";
   let [nodes, setNodes] = useState([]);
   let [nodeLabels, setNodeLabels] = useState([]);
@@ -59,13 +60,13 @@ function SketchPanel() {
 
   const getMotifCount = async (motif) => {
     // get request to backend to get motif count
-    let url = `${process.env.REACT_APP_API_PROTOCOL}://${process.env.REACT_APP_API_URL}/count/motif=${motif}`;
+    let url = `${vimo_server}/count/motif=${motif}`;
     return (await axios.get(url)).data;
   };
 
   const getRelativeMotifCount = async (motif) => {
     // get request to backend to get motif count
-    let url = `${process.env.REACT_APP_API_PROTOCOL}://${process.env.REACT_APP_API_URL}/rel_count/motif=${motif}`;
+    let url = `${vimo_server}/rel_count/motif=${motif}`;
     return (await axios.get(url)).data;
   };
 
@@ -1137,8 +1138,8 @@ function SketchPanel() {
   }, [context.constraintsToAddToSketch]);
 
   return (
-    <div className="sketch-panel-style">
-      <Grid container className="canvas-wrapper" spacing={0}>
+    <div className={classes["sketch-panel-style"]}>
+      <Grid container className={classes["canvas-wrapper"]} spacing={0}>
         <Grid item xs={1.4}>
           <Grid container direction="column" justifyContent="center">
             <Tooltip title="Draw Node" placement="right">
@@ -1207,7 +1208,7 @@ function SketchPanel() {
         </Grid>
         <Grid item xs={9.2} style={{ height: "inherit" }}>
           <div
-            className="sketch-canvas"
+            className={classes["sketch-canvas"]}
             id="sketch-canvas-container"
             style={{ cursor: cursor || "crosshair" }}
           >
@@ -1217,7 +1218,7 @@ function SketchPanel() {
                 anchorReference="anchorPosition"
                 open={true}
                 hideBackdrop={true}
-                className={"sketch-popover"}
+                className={classes["sketch-popover"]}
                 disableEnforceFocus={true}
                 anchorPosition={popperLocation}
                 anchorOrigin={{
@@ -1231,7 +1232,7 @@ function SketchPanel() {
               >
                 <Grid
                   container
-                  className={"popover-grid"}
+                  className={classes["popover-grid"]}
                   direction="column"
                   justifyContent="center"
                   alignItems="flex-start"
@@ -1251,7 +1252,7 @@ function SketchPanel() {
 
                 <Grid
                   container
-                  className={"popover-grid"}
+                  className={classes["popover-grid"]}
                   direction="column"
                   justifyContent="center"
                   alignItems="flex-end"

@@ -1,0 +1,59 @@
+#motif-panel-div {
+    position: relative;
+    margin: 20px;
+    padding: 0;
+}
+
+
+#motif-panel-div .form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    /*background-color: rgba(255, 255, 255, 0.5);*/
+    /*border-radius: 10px;*/
+    /*box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;*/
+    z-index: 2;
+    max-height: inherit;
+}
+
+
+#motif-panel-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: inherit;
+    /*align-items: center;*/
+    /*margin: 5px 5px 0 5px;*/
+
+}
+
+.handle {
+    position: relative;
+    top: 5px;
+    left: 5px;
+}
+
+.formRow {
+    float: left;
+}
+
+
+.sketch-panel-options-style {
+    float: left;
+    clear: left;
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+.formColumn {
+    flex-grow: 1;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin: 0 10px;
+}
+
+/*.buttonDiv {*/
+/*    height: inherit;*/
+/*    align-self: flex-end;*/
+/*}*/
