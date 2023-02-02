@@ -25,7 +25,7 @@ import { Sketch } from '@vimo-public/vimo-sketches';
 | data_version          | name and version of dataset (e.g., 'hemibrain:v1.2.1')  | String   |
 | isQuerying            | enable/disable search button                            | Boolean  |
 | processRequest(query) | callback function for search button                     | Function |
- | vimo_server | url of vimo_server | String |
+| vimo_server           | url of vimo_server (e.g., 'http://localhost:4242')      | String   |
 
 * Token can be found in [here](https://neuprint.janelia.org/account).
 
