@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import classes from "./SketchPanel.module.css";
+import "./SketchPanel.css";
 import QueryBuilder from "./QueryBuilder";
 import CircleTwoToneIcon from "@mui/icons-material/CircleTwoTone";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
@@ -1138,8 +1138,8 @@ function SketchPanel(props) {
   }, [context.constraintsToAddToSketch]);
 
   return (
-    <div className={classes["sketch-panel-style"]}>
-      <Grid container className={classes["canvas-wrapper"]} spacing={0}>
+    <div className="sketch-panel-style">
+      <Grid container className="canvas-wrapper" spacing={0}>
         <Grid item xs={1.4}>
           <Grid container direction="column" justifyContent="center">
             <Tooltip title="Draw Node" placement="right">
@@ -1208,7 +1208,7 @@ function SketchPanel(props) {
         </Grid>
         <Grid item xs={9.2} style={{ height: "inherit" }}>
           <div
-            className={classes["sketch-canvas"]}
+            className="sketch-canvas"
             id="sketch-canvas-container"
             style={{ cursor: cursor || "crosshair" }}
           >
@@ -1218,7 +1218,7 @@ function SketchPanel(props) {
                 anchorReference="anchorPosition"
                 open={true}
                 hideBackdrop={true}
-                className={classes["sketch-popover"]}
+                className="sketch-popover"
                 disableEnforceFocus={true}
                 anchorPosition={popperLocation}
                 anchorOrigin={{
@@ -1232,7 +1232,7 @@ function SketchPanel(props) {
               >
                 <Grid
                   container
-                  className={classes["popover-grid"]}
+                  className="popover-grid"
                   direction="column"
                   justifyContent="center"
                   alignItems="flex-start"
@@ -1252,7 +1252,7 @@ function SketchPanel(props) {
 
                 <Grid
                   container
-                  className={classes["popover-grid"]}
+                  className="popover-grid"
                   direction="column"
                   justifyContent="center"
                   alignItems="flex-end"

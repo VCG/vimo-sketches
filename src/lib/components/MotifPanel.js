@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import classes from "./MotifPanel.module.css";
+import "./MotifPanel.css";
 import { AppContext } from "../contexts/GlobalContext";
 import SketchPanel from "./SketchPanel";
 import SearchIcon from "@mui/icons-material/Search";
@@ -98,8 +98,8 @@ function MotifPanel(props) {
       {/*<Alert severity="error" sx={{position:'absolute'}}>*/}
       {/*    This is an error alert — <strong>check it out!</strong>*/}
       {/*</Alert>*/}
-      <div className={classes["form"]}>
-        <div className={classes["handle"]}>
+      <div className="form">
+        <div className="handle">
           {/*<DragHandleIcon />*/}
           <ThemeProvider theme={Color.theme}>
             <Tooltip title={parseButtonTooltip()} arrow placement="right">
@@ -119,7 +119,7 @@ function MotifPanel(props) {
         </div>
         <div id="motif-panel-wrapper">
           <SketchPanel vimo_server={vimo_server}/>
-          <div className={classes["sketch-panel-options-style"]}>
+          <div className="sketch-panel-options-style">
             <FormControl sx={{ m: 1, maxWidth: 80 }}>
               <TextField
                 id="outlined-number"
