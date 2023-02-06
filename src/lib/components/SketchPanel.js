@@ -956,17 +956,18 @@ function SketchPanel(props) {
 
   // On init set up our paperjs
   useEffect(() => {
-    paper.setup(sketchPanelId);
-    paper.view.onResize = function () {
+    if (!paper.view) {
+      paper.setup(sketchPanelId);
+      paper.view.onResize = function () {
+        setCanvasDimension(paper.view.size);
+      };
       setCanvasDimension(paper.view.size);
-    };
-    setCanvasDimension(paper.view.size);
-
-    let tempCircle = new paper.Path.Circle([0, 0], 6);
-    tempCircle.fill = "none";
-    tempCircle.strokeWidth = 0;
-    setTestCircle(tempCircle);
-    setPencil(new paper.Tool());
+      let tempCircle = new paper.Path.Circle([0, 0], 6);
+      tempCircle.fill = "none";
+      tempCircle.strokeWidth = 0;
+      setTestCircle(tempCircle);
+      setPencil(new paper.Tool());
+    }
   }, []);
 
   const getEncodedMotif = (nodes, edges) => {
