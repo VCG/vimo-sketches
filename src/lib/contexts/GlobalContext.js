@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import {NEURON_COLORS, SYNAPSE_COLORS } from "../config/Colors";
+
 export const AppContext = React.createContext(null);
 
 // Step 2: Create a ContextWrapper component that has to be the parent of every consumer.
@@ -10,34 +12,8 @@ export const ContextWrapper = (props) => {
   const [focusedMotif, setFocusedMotif] = useState(null);
   const [motifQuery, setMotifQuery] = useState();
   const [abstractionLevel, setAbstractionLevel] = useState();
-  const [neuronColors, setNeuronColors] = useState([
-    // "#7e2fd0",
-    // "#81D02F",
-    // "#34AFCB",
-    // "#B3A94C",
-    // "#4C56B3",
-    // "#D9C226",
-    // "#263DD9",
-    // "#CB5034",
-    "#9400D3",
-    "#DAA520",
-    "#97d0b5",
-    "#76acf3",
-    "#FF6347",
-    "#4C56B3",
-    "#D9C226",
-    "#263DD9",
-  ]);
-  const [synapseColors, setSynapseColors] = useState([
-    "#FF6347",
-    "#DAA520",
-    "#97d0b5",
-    "#76acf3",
-    "#9400D3",
-    "#4C56B3",
-    "#D9C226",
-    "#263DD9",
-  ]);
+  const [neuronColors, setNeuronColors] = useState(NEURON_COLORS);
+  const [synapseColors, setSynapseColors] = useState(SYNAPSE_COLORS);
 
   const [highlightColor, setHighlightColor] = useState("#0000ff");
 
