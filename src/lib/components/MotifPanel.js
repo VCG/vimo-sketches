@@ -17,6 +17,7 @@ function MotifPanel(props) {
   const [number, setNumber] = useState(1);
   const [enableAbsMotifCountInfo, setEnableAbsMotifCountInfo] = useState(false);
   const [countButtonColor, setCountButtonColor] = useState("neutral");
+  const [cypherLoading, setCypherLoading] = useState(false);
 
   const motifPanelId = "motif-panel-div";
   const context = useContext(AppContext);
@@ -30,6 +31,7 @@ function MotifPanel(props) {
   const fetchMotifs = async () => {
     console.log("Fetch Motifs");
     context.setErrorMessage(null);
+    setCypherLoading(true);
     try {
       const query = await getCypherQuery(vimo_server, data_server, data_version, token, context.motifQuery, number)
       // setCypherQuery(query);
@@ -37,6 +39,8 @@ function MotifPanel(props) {
     } catch (e) {
       console.log(e);
       context.setErrorMessage(e.message);
+    } finally {
+      setCypherLoading(false);
     }
   };
 
@@ -142,7 +146,7 @@ function MotifPanel(props) {
                 variant="contained"
                 startIcon={<SearchIcon />}
                 onClick={handleSubmit}
-                disabled={isQuerying}
+                disabled={cypherLoading || isQuerying}
               >
                 Search
               </Button>
