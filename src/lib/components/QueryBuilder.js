@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../contexts/GlobalContext";
-import { NodeFields } from "../config/NodeFields";
-import { EdgeFields } from "../config/EdgeFields";
+// import { NodeFields } from "../config/NodeFields";
+// import { EdgeFields } from "../config/EdgeFields";
 import { Builder, Query, Utils as QbUtils } from "react-awesome-query-builder";
 import MuiConfig from "react-awesome-query-builder/lib/config/mui";
 import "react-awesome-query-builder/lib/css/styles.css";
@@ -17,7 +17,7 @@ InitialConfig["settings"]["canReorder"] = false;
 InitialConfig["settings"]["renderSize"] = "small";
 InitialConfig["settings"]["setOpOnChangeField"] = ["keep", "first"];
 
-function QueryBuilder() {
+function QueryBuilder({NodeFields, EdgeFields}) {
   let [tree, setTree] = useState();
   const context = useContext(AppContext);
 

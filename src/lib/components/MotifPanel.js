@@ -118,7 +118,7 @@ function MotifPanel(props) {
           ) : null}
         </div>
         <div id="motif-panel-wrapper">
-          <SketchPanel vimo_server={vimo_server}/>
+          <SketchPanel {...props}/>
           <div className="sketch-panel-options-style">
             <FormControl sx={{ m: 1, maxWidth: 80 }}>
               <TextField

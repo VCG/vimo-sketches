@@ -9,7 +9,14 @@ import InfoIcon from "@mui/icons-material/Info";
 import paper from "paper";
 import { AppContext } from "../contexts/GlobalContext";
 import _ from "lodash";
-import { Grid, IconButton, Popover, Tooltip, Button } from "@mui/material";
+import {
+  Grid,
+  IconButton,
+  Popover,
+  Tooltip,
+  Button,
+  CircularProgress,
+} from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFileExport,
@@ -19,7 +26,7 @@ import {
 import { Utils as QbUtils } from "react-awesome-query-builder";
 import axios from "axios";
 import MuiConfig from "react-awesome-query-builder/lib/config/mui";
-import { NodeFields } from "../config/NodeFields";
+import { getEdgeFields, getNodeFields } from "../services/data";
 
 let InitialConfig = MuiConfig;
 delete InitialConfig["conjunctions"]["OR"];
@@ -31,7 +38,7 @@ InitialConfig["settings"]["renderSize"] = "small";
 InitialConfig["settings"]["setOpOnChangeField"] = ["keep", "first"];
 
 function SketchPanel(props) {
-  const { vimo_server } = props
+  const { data_server, data_version, token, vimo_server } = props;
   const sketchPanelId = "sketch-panel";
   let [nodes, setNodes] = useState([]);
   let [nodeLabels, setNodeLabels] = useState([]);
@@ -54,6 +61,8 @@ function SketchPanel(props) {
   let currentNode;
   let currentSelection;
   const [canvasDimension, setCanvasDimension] = useState({});
+  const [NodeFields, setNodeFields] = useState(null);
+  const [EdgeFields, setEdgeFields] = useState(null);
 
   // We track the overall motif in the global context
   const context = useContext(AppContext);
@@ -652,6 +661,52 @@ function SketchPanel(props) {
     return newEdgeObj;
   };
 
+  const addExistEdges = (newEdges) => {
+    let output = [];
+    newEdges.map((edge) => {
+      let path = new paper.Path();
+      path.strokeColor = "#000000";
+      path.strokeWidth = 3;
+      path.opacity = 1.0;
+      path.add([
+        edge.fromNode.circle.position[1],
+        edge.fromNode.circle.position[2],
+      ]);
+      path.add([
+        edge.toNode.circle.position[1],
+        edge.toNode.circle.position[2],
+      ]);
+
+      let startNode = nodes[edge.indices[0]];
+      let endNode = nodes[edge.indices[1]];
+      path.segments[0].point = startNode.circle.getNearestPoint(
+        endNode.circle.position
+      );
+      path.segments[1].point = endNode.circle.getNearestPoint(
+        startNode.circle.position
+      );
+      let tree = "tree" in edge ? edge.tree : null;
+      // let _newEdge = addEdge(
+      //   startNode,
+      //   endNode,
+      //   path,
+      //   edge.properties,
+      //   tree,
+      //   false
+      // );
+      let _newEdge = createEdge(
+        startNode,
+        endNode,
+        path,
+        edge.indices,
+        edge.properties,
+        tree
+      );
+      output.push(_newEdge);
+    });
+    setEdges([...output]);
+  };
+
   const createEdge = (
     fromNode,
     toNode,
@@ -841,6 +896,7 @@ function SketchPanel(props) {
   useEffect(() => {
     if (!edges) return;
     edges.forEach((e, i) => {
+      console.log(e, edges);
       let oppositeEdge = _.findIndex(edges, (oppE) => {
         return _.isEqual(oppE.indices, [e.indices[1], e.indices[0]]);
       });
@@ -956,19 +1012,55 @@ function SketchPanel(props) {
 
   // On init set up our paperjs
   useEffect(() => {
-    if (!paper.view) {
-      paper.setup(sketchPanelId);
-      paper.view.onResize = function () {
-        setCanvasDimension(paper.view.size);
-      };
+    paper.setup(sketchPanelId);
+    paper.view.onResize = function () {
       setCanvasDimension(paper.view.size);
-      let tempCircle = new paper.Path.Circle([0, 0], 6);
-      tempCircle.fill = "none";
-      tempCircle.strokeWidth = 0;
-      setTestCircle(tempCircle);
+    };
+    setCanvasDimension(paper.view.size);
+    let tempCircle = new paper.Path.Circle([0, 0], 6);
+    tempCircle.fill = "none";
+    tempCircle.strokeWidth = 0;
+    setTestCircle(tempCircle);
+    if (!pencil) {
       setPencil(new paper.Tool());
     }
+    // fetch Node and Edge Fields
+    if (!NodeFields || !EdgeFields) {
+      fetchNodeEdgeFields();
+    }
+    if (nodes.length > 0) {
+      const newNodes = [...nodes];
+      setNodes([]);
+      newNodes.map((node) => {
+        placeCircle(node.circle, node.label, node.properties, node.tree);
+      });
+    }
+    if (edges.length > 0) {
+      const newEdges = [...edges];
+      addExistEdges(newEdges);
+    }
   }, []);
+
+  const fetchNodeEdgeFields = async () => {
+    try {
+      const nodeFields = await getNodeFields(
+        vimo_server,
+        data_server,
+        data_version,
+        token
+      );
+      const edgeFields = await getEdgeFields(
+        vimo_server,
+        data_server,
+        data_version,
+        token
+      );
+      setNodeFields(nodeFields);
+      setEdgeFields(edgeFields);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const getEncodedMotif = (nodes, edges) => {
     let encodedNodes = nodes.map((n, i) => {
@@ -1019,7 +1111,6 @@ function SketchPanel(props) {
 
     context.setMotifQuery(encodedMotif);
   }, [nodes, edges]);
-
 
   const isObject = (obj) => {
     return Object.prototype.toString.call(obj) === "[object Object]";
@@ -1273,7 +1364,27 @@ function SketchPanel(props) {
                   </Button>
                 </Grid>
 
-                <QueryBuilder />
+                {NodeFields && EdgeFields ? (
+                  <QueryBuilder
+                    NodeFields={NodeFields}
+                    EdgeFields={EdgeFields}
+                  />
+                ) : (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: "60px",
+                      width: "290px",
+                    }}
+                  >
+                    <CircularProgress
+                      size="1.5rem"
+                      style={{ marginTop: "30px" }}
+                    />
+                  </div>
+                )}
               </Popover>
             )}
           </div>
