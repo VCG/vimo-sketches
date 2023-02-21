@@ -1,6 +1,6 @@
 {
   "name": "@vimo-public/vimo-sketches",
-  "version": "0.1.6",
+  "version": "0.1.8",
   "private": false,
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -72,7 +72,8 @@
   "devDependencies": {
     "@babel/cli": "^7.20.7",
     "@babel/core": "^7.20.12",
-    "@babel/preset-env": "^7.20.2"
+    "@babel/preset-env": "^7.20.2",
+    "prettier": "^2.7.1"
   },
   "description": "A React component of the Vimo Sketching interface.",
   "keywords": [
