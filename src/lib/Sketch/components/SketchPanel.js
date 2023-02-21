@@ -1405,7 +1405,7 @@ function SketchPanel(props) {
                 color="default"
                 onClick={() => exportMotif()}
               >
-                <FontAwesomeIcon size={"sm"} icon={faFileExport} />
+                <FontAwesomeIcon size={"sm"} icon={faFileExport} style={{marginLeft: "0.6em"}} />
               </IconButton>
             </Tooltip>
           </Grid>
