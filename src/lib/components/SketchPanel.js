@@ -896,7 +896,6 @@ function SketchPanel(props) {
   useEffect(() => {
     if (!edges) return;
     edges.forEach((e, i) => {
-      console.log(e, edges);
       let oppositeEdge = _.findIndex(edges, (oppE) => {
         return _.isEqual(oppE.indices, [e.indices[1], e.indices[0]]);
       });
@@ -1375,7 +1374,7 @@ function SketchPanel(props) {
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
-                      height: "60px",
+                      height: "70px",
                       width: "290px",
                     }}
                   >
