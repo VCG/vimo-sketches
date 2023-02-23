@@ -31,3 +31,21 @@ import { Sketch } from '@vimo-public/vimo-sketches';
 
 ### Output
 This component turns motif sketch into cypher query and calls processRequest with the query as a parameter.
+
+
+
+
+
+
+
+### Ideas Neuprint Executor
+
+```javascript
+// constructor
+ne = NeuprintExecutor(host, dataset, vimo-server, token)
+
+// functions
+nodeFields = ne.getNodeFields(args)
+edgeFields = ne.getEdgeFields(args)
+cypher = ne.json2cypher(json)
+```
