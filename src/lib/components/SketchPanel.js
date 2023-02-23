@@ -26,7 +26,11 @@ import {
 import { Utils as QbUtils } from "react-awesome-query-builder";
 import axios from "axios";
 import MuiConfig from "react-awesome-query-builder/lib/config/mui";
-import { getEdgeFields, getNodeFields } from "../services/data";
+import {
+  getEdgeFields,
+  getNodeFields,
+  getNeuronAttributes,
+} from "../services/data";
 
 let InitialConfig = MuiConfig;
 delete InitialConfig["conjunctions"]["OR"];
@@ -1042,19 +1046,35 @@ function SketchPanel(props) {
 
   const fetchNodeEdgeFields = async () => {
     try {
-      const nodeFields = await getNodeFields(
+      const nodeFields1 = await getNodeFields(
         vimo_server,
         data_server,
         data_version,
         token
       );
+      console.log(nodeFields1);
+      const nodeFields2 = await getNeuronAttributes(
+        vimo_server,
+        data_server,
+        data_version,
+        token
+      );
+      console.log(nodeFields2);
       const edgeFields = await getEdgeFields(
         vimo_server,
         data_server,
         data_version,
         token
       );
-      setNodeFields(nodeFields);
+
+      const combinedDict = Object.assign({}, nodeFields1, nodeFields2);
+      const uniqueDict = {};
+      for (const key in combinedDict) {
+        if (!uniqueDict.hasOwnProperty(key)) {
+          uniqueDict[key] = combinedDict[key];
+        }
+      }
+      setNodeFields(uniqueDict);
       setEdgeFields(edgeFields);
     } catch (e) {
       console.log(e);
