@@ -1,4 +1,6 @@
-import Sketch from "./lib/Sketch";
+import React, { useEffect } from "react";
+import Sketch from "./lib/Sketch/Sketch";
+import NeuprintExecutor from "./lib/Executors/NeuprintExecutor";
 import "./App.css";
 
 function App() {
@@ -8,11 +10,20 @@ function App() {
   const data_server = "https://neuprint.janelia.org/";
   const data_version = "hemibrain:v1.2.1";
   const vimo_server = "http://localhost:4242"; //"https://vimo-server-bmcp5imp6q-uk.a.run.app";
+  const ne = new NeuprintExecutor(
+    data_server,
+    data_version,
+    token,
+    vimo_server
+  );
+
   const isQuerying = false;
   const processRequest = (query) => {
     console.log(query);
     return query;
   };
+
+  useEffect(() => {});
   const attrs = {};
   return (
     <div>
