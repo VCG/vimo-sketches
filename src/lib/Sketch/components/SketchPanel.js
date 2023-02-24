@@ -42,7 +42,7 @@ InitialConfig["settings"]["renderSize"] = "small";
 InitialConfig["settings"]["setOpOnChangeField"] = ["keep", "first"];
 
 function SketchPanel(props) {
-  const { data_server, data_version, token, vimo_server } = props;
+  const { attrs } = props;
   const sketchPanelId = "sketch-panel";
   let [nodes, setNodes] = useState([]);
   let [nodeLabels, setNodeLabels] = useState([]);
@@ -71,12 +71,14 @@ function SketchPanel(props) {
   // We track the overall motif in the global context
   const context = useContext(AppContext);
 
+  // TODO
   const getMotifCount = async (motif) => {
     // get request to backend to get motif count
     let url = `${vimo_server}/count/motif=${motif}`;
     return (await axios.get(url)).data;
   };
 
+  // TODO
   const getRelativeMotifCount = async (motif) => {
     // get request to backend to get motif count
     let url = `${vimo_server}/rel_count/motif=${motif}`;

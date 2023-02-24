@@ -13,7 +13,7 @@ import { Color } from "../utils/rendering";
 import Tooltip from "@mui/material/Tooltip";
 
 function MotifPanel(props) {
-  const {data_server, data_version, token, vimo_server, isQuerying, processRequest} = props;
+  const { isQuerying, processRequest, attrs } = props;
   const [number, setNumber] = useState(1);
   const [enableAbsMotifCountInfo, setEnableAbsMotifCountInfo] = useState(false);
   const [countButtonColor, setCountButtonColor] = useState("neutral");
@@ -27,15 +27,14 @@ function MotifPanel(props) {
     return fetchMotifs();
   };
 
-
   const fetchMotifs = async () => {
     console.log("Fetch Motifs");
     context.setErrorMessage(null);
     setCypherLoading(true);
     try {
-      const query = await getCypherQuery(vimo_server, data_server, data_version, token, context.motifQuery, number)
+      // const query = await getCypherQuery(vimo_server, data_server, data_version, token, context.motifQuery, number)
       // setCypherQuery(query);
-      processRequest(query)
+      processRequest(context.motifQuery);
     } catch (e) {
       console.log(e);
       context.setErrorMessage(e.message);
@@ -43,7 +42,6 @@ function MotifPanel(props) {
       setCypherLoading(false);
     }
   };
-
 
   const getMotifCountAsString = () => {
     if (context.absMotifCount) {
@@ -97,8 +95,8 @@ function MotifPanel(props) {
 
   return (
     <div id={motifPanelId}>
-    {/*<div className={classes["motif-panel-div"]}>*/}
-    {/*<div>*/}
+      {/*<div className={classes["motif-panel-div"]}>*/}
+      {/*<div>*/}
       {/*<Alert severity="error" sx={{position:'absolute'}}>*/}
       {/*    This is an error alert — <strong>check it out!</strong>*/}
       {/*</Alert>*/}
@@ -122,7 +120,7 @@ function MotifPanel(props) {
           ) : null}
         </div>
         <div id="motif-panel-wrapper">
-          <SketchPanel {...props}/>
+          <SketchPanel {...props} />
           <div className="sketch-panel-options-style">
             <FormControl sx={{ m: 1, maxWidth: 80 }}>
               <TextField

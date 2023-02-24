@@ -12,23 +12,23 @@ export default class NeuprintExecutor {
 
   getEdgeFields() {}
 
-  json2cypher() {
-    //   try {
-    //   const res = await axios.post(`${this.vimoServer}/cypher`, {
-    //     server: data_server,
-    //     version: data_version,
-    //     token: JSON.stringify(token),
-    //     motif: motif,
-    //     lim: lim,
-    //   });
-    //   return res.data;
-    // } catch (error) {
-    //   if (error.response) {
-    //     throw new Error(
-    //       `${error.response.status}: ${error.response.data?.detail?.error}`
-    //     );
-    //   }
-    //   throw error;
-    // }
+  async json2cypher(motifJson, lim) {
+    try {
+      const res = await axios.post(`${this.vimoServer}/cypher`, {
+        server: this.dataServer,
+        version: this.dataset,
+        token: JSON.stringify(this.token),
+        motif: motifJson,
+        lim: lim,
+      });
+      return res.data;
+    } catch (error) {
+      if (error.response) {
+        throw new Error(
+          `${error.response.status}: ${error.response.data?.detail?.error}`
+        );
+      }
+      throw error;
+    }
   }
 }
