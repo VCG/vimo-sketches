@@ -24,7 +24,6 @@ import {
   faHand,
 } from "@fortawesome/free-solid-svg-icons";
 import { Utils as QbUtils } from "react-awesome-query-builder";
-import axios from "axios";
 import MuiConfig from "react-awesome-query-builder/lib/config/mui";
 
 let InitialConfig = MuiConfig;
@@ -1026,10 +1025,9 @@ function SketchPanel(props) {
     }
     // fetch Node and Edge Fields
     if (!NodeFields || !EdgeFields) {
-      // fetchNodeEdgeFields();
       if (typeof attrs !== "undefined") {
-        setNodeFields(attrs["NodeFields"]);
-        setEdgeFields(attrs["EdgeFields"]);
+        setNodeFields(attrs.NodeFields);
+        setEdgeFields(attrs.EdgeFields);
       }
     }
     if (nodes.length > 0) {
@@ -1044,43 +1042,6 @@ function SketchPanel(props) {
       addExistEdges(newEdges);
     }
   }, []);
-
-  // const fetchNodeEdgeFields = async () => {
-  //   try {
-  //     const nodeFields1 = await getNodeFields(
-  //       vimo_server,
-  //       data_server,
-  //       data_version,
-  //       token
-  //     );
-  //     console.log(nodeFields1);
-  //     const nodeFields2 = await getNeuronAttributes(
-  //       vimo_server,
-  //       data_server,
-  //       data_version,
-  //       token
-  //     );
-  //     console.log(nodeFields2);
-  //     const edgeFields = await getEdgeFields(
-  //       vimo_server,
-  //       data_server,
-  //       data_version,
-  //       token
-  //     );
-  //
-  //     const combinedDict = Object.assign({}, nodeFields1, nodeFields2);
-  //     const uniqueDict = {};
-  //     for (const key in combinedDict) {
-  //       if (!uniqueDict.hasOwnProperty(key)) {
-  //         uniqueDict[key] = combinedDict[key];
-  //       }
-  //     }
-  //     setNodeFields(uniqueDict);
-  //     setEdgeFields(edgeFields);
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
 
   const getEncodedMotif = (nodes, edges) => {
     let encodedNodes = nodes.map((n, i) => {
