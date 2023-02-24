@@ -40,7 +40,7 @@ export default App;
 ### Props
 | Name                  | Description                                             | Type     | 
 |-----------------------|---------------------------------------------------------|----------|
-| token                 | neuPrint authentication token                           | String   |
+| token                 | [neuPrint authentication token](https://neuprint.janelia.org/account)                       | String   |
 | data_server           | url of database (e.g., 'https://neuprint.janelia.org/') | String   |
 | data_version          | name and version of dataset (e.g., 'hemibrain:v1.2.1')  | String   |
 | isQuerying            | enable/disable search button                            | Boolean  |
