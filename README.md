@@ -8,13 +8,33 @@ We need a [vimo-server](https://github.com/VCG/vimo-server) to use the [vimo-ske
 `npm install @vimo-public/vimo-sketches`
 
 ### Usage
-```javascript
-import { Sketch } from '@vimo-public/vimo-sketches';
-```
 
 ```javascript
-<Sketch vimo_server={vimo_server} data_server={data_server} data_version={data_version} token={token} isQuerying={isQuerying} processRequest={processRequest}/>
+import React from "react";
+import {Sketch} from '@vimo-public/vimo-sketches';
+
+function processRequest() {
+    console.log("This code will be executed when the search button is clicked.")
+}
+function App() {
+    return (
+        <Sketch
+            vimo_server={"http://my-vimo-server-url:4242"} // replace with your vimo-server url
+            data_server={"https://neuprint.janelia.org/"}
+            data_version={"hemibrain:v1.2.1"}
+            token={"..."} // replace with your neuPrint token
+            isQuerying={false}
+            processRequest={processRequest}
+        />
+    );
+}
+
+export default App;
 ```
+
+
+
+
 
 
 ### Props
