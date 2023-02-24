@@ -8,18 +8,13 @@ export default class NeuprintExecutor {
     this.vimoServer = vimoServer;
   }
 
-  getNodeFields() {}
-
-  getEdgeFields() {}
-
-  async json2cypher(motifJson, lim) {
+  async fetchData(endpoint, attrs = {}) {
     try {
-      const res = await axios.post(`${this.vimoServer}/cypher`, {
+      const res = await axios.post(`${this.vimoServer}/${endpoint}`, {
         server: this.dataServer,
         version: this.dataset,
         token: JSON.stringify(this.token),
-        motif: motifJson,
-        lim: lim,
+        ...attrs,
       });
       return res.data;
     } catch (error) {
@@ -30,5 +25,20 @@ export default class NeuprintExecutor {
       }
       throw error;
     }
+  }
+
+  async getNodeFields() {
+    return await this.fetchData("fetch_node_fields");
+  }
+
+  async getEdgeFields() {
+    return await this.fetchData("fetch_edge_fields");
+  }
+
+  async json2cypher(motifJson, lim) {
+    return await this.fetchData("cypher", {
+      motif: motifJson,
+      lim: lim,
+    });
   }
 }

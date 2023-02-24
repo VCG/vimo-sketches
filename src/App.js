@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Sketch from "./lib/Sketch/Sketch";
 import NeuprintExecutor from "./lib/Executors/NeuprintExecutor";
 import "./App.css";
@@ -18,13 +18,20 @@ function App() {
   );
 
   const isQuerying = false;
-  const processRequest = (query) => {
+  const processRequest = async (motifJson, lim) => {
+    const query = await ne.json2cypher(motifJson, lim);
     console.log(query);
     return query;
   };
 
-  useEffect(() => {});
-  const attrs = {};
+  const [attrs, setAttrs] = useState({});
+  useEffect(async () => {
+    setAttrs({
+      NodeFields: await ne.getNodeFields(),
+      EdgeFields: await ne.getEdgeFields(),
+    });
+  }, []);
+
   return (
     <div>
       <Sketch

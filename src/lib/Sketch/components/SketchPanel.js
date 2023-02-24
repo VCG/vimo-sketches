@@ -26,11 +26,6 @@ import {
 import { Utils as QbUtils } from "react-awesome-query-builder";
 import axios from "axios";
 import MuiConfig from "react-awesome-query-builder/lib/config/mui";
-import {
-  getEdgeFields,
-  getNodeFields,
-  getNeuronAttributes,
-} from "../services/data";
 
 let InitialConfig = MuiConfig;
 delete InitialConfig["conjunctions"]["OR"];
@@ -72,18 +67,18 @@ function SketchPanel(props) {
   const context = useContext(AppContext);
 
   // TODO
-  const getMotifCount = async (motif) => {
-    // get request to backend to get motif count
-    let url = `${vimo_server}/count/motif=${motif}`;
-    return (await axios.get(url)).data;
-  };
-
-  // TODO
-  const getRelativeMotifCount = async (motif) => {
-    // get request to backend to get motif count
-    let url = `${vimo_server}/rel_count/motif=${motif}`;
-    return (await axios.get(url)).data;
-  };
+  // const getMotifCount = async (motif) => {
+  //   // get request to backend to get motif count
+  //   let url = `${vimo_server}/count/motif=${motif}`;
+  //   return (await axios.get(url)).data;
+  // };
+  //
+  // // TODO
+  // const getRelativeMotifCount = async (motif) => {
+  //   // get request to backend to get motif count
+  //   let url = `${vimo_server}/rel_count/motif=${motif}`;
+  //   return (await axios.get(url)).data;
+  // };
 
   const calculateNewPosition = (dimension, position) => {
     let newX = (canvasDimension.width / dimension.width) * position[1];
@@ -1031,7 +1026,11 @@ function SketchPanel(props) {
     }
     // fetch Node and Edge Fields
     if (!NodeFields || !EdgeFields) {
-      fetchNodeEdgeFields();
+      // fetchNodeEdgeFields();
+      if (typeof attrs !== "undefined") {
+        setNodeFields(attrs["NodeFields"]);
+        setEdgeFields(attrs["EdgeFields"]);
+      }
     }
     if (nodes.length > 0) {
       const newNodes = [...nodes];
@@ -1046,42 +1045,42 @@ function SketchPanel(props) {
     }
   }, []);
 
-  const fetchNodeEdgeFields = async () => {
-    try {
-      const nodeFields1 = await getNodeFields(
-        vimo_server,
-        data_server,
-        data_version,
-        token
-      );
-      console.log(nodeFields1);
-      const nodeFields2 = await getNeuronAttributes(
-        vimo_server,
-        data_server,
-        data_version,
-        token
-      );
-      console.log(nodeFields2);
-      const edgeFields = await getEdgeFields(
-        vimo_server,
-        data_server,
-        data_version,
-        token
-      );
-
-      const combinedDict = Object.assign({}, nodeFields1, nodeFields2);
-      const uniqueDict = {};
-      for (const key in combinedDict) {
-        if (!uniqueDict.hasOwnProperty(key)) {
-          uniqueDict[key] = combinedDict[key];
-        }
-      }
-      setNodeFields(uniqueDict);
-      setEdgeFields(edgeFields);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  // const fetchNodeEdgeFields = async () => {
+  //   try {
+  //     const nodeFields1 = await getNodeFields(
+  //       vimo_server,
+  //       data_server,
+  //       data_version,
+  //       token
+  //     );
+  //     console.log(nodeFields1);
+  //     const nodeFields2 = await getNeuronAttributes(
+  //       vimo_server,
+  //       data_server,
+  //       data_version,
+  //       token
+  //     );
+  //     console.log(nodeFields2);
+  //     const edgeFields = await getEdgeFields(
+  //       vimo_server,
+  //       data_server,
+  //       data_version,
+  //       token
+  //     );
+  //
+  //     const combinedDict = Object.assign({}, nodeFields1, nodeFields2);
+  //     const uniqueDict = {};
+  //     for (const key in combinedDict) {
+  //       if (!uniqueDict.hasOwnProperty(key)) {
+  //         uniqueDict[key] = combinedDict[key];
+  //       }
+  //     }
+  //     setNodeFields(uniqueDict);
+  //     setEdgeFields(edgeFields);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   const getEncodedMotif = (nodes, edges) => {
     let encodedNodes = nodes.map((n, i) => {
@@ -1121,14 +1120,14 @@ function SketchPanel(props) {
       ? context.setShowWarning(true)
       : context.setShowWarning(false);
 
-    const count = await getMotifCount(JSON.stringify(encodedMotif));
-    context.setAbsMotifCount(count);
-
-    // get relative count of motif in network
-    const relative_count = await getRelativeMotifCount(
-      JSON.stringify(encodedMotif)
-    );
-    context.setRelativeMotifCount(relative_count);
+    // const count = await getMotifCount(JSON.stringify(encodedMotif));
+    // context.setAbsMotifCount(count);
+    //
+    // // get relative count of motif in network
+    // const relative_count = await getRelativeMotifCount(
+    //   JSON.stringify(encodedMotif)
+    // );
+    // context.setRelativeMotifCount(relative_count);
 
     context.setMotifQuery(encodedMotif);
   }, [nodes, edges]);
@@ -1196,7 +1195,7 @@ function SketchPanel(props) {
               QbUtils.loadTree({ id: QbUtils.uuid(), type: "group" }),
               {
                 ...InitialConfig,
-                fields: NodeFields,
+                fields: attrs.NodeFields,
               }
             );
           }
@@ -1225,7 +1224,7 @@ function SketchPanel(props) {
             QbUtils.loadTree(newTreeJsValue),
             {
               ...InitialConfig,
-              fields: NodeFields,
+              fields: attrs.NodeFields,
             }
           );
           return renameCircle(
@@ -1385,10 +1384,10 @@ function SketchPanel(props) {
                   </Button>
                 </Grid>
 
-                {NodeFields && EdgeFields ? (
+                {attrs.NodeFields && attrs.EdgeFields ? (
                   <QueryBuilder
-                    NodeFields={NodeFields}
-                    EdgeFields={EdgeFields}
+                    NodeFields={attrs.NodeFields}
+                    EdgeFields={attrs.EdgeFields}
                   />
                 ) : (
                   <div

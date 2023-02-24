@@ -34,7 +34,7 @@ function MotifPanel(props) {
     try {
       // const query = await getCypherQuery(vimo_server, data_server, data_version, token, context.motifQuery, number)
       // setCypherQuery(query);
-      processRequest(context.motifQuery);
+      processRequest(context.motifQuery, number);
     } catch (e) {
       console.log(e);
       context.setErrorMessage(e.message);
