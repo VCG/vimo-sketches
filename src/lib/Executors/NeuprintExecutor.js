@@ -41,4 +41,16 @@ export default class NeuprintExecutor {
       lim: lim,
     });
   }
+
+  getMotifCount = async (motif) => {
+    // get request to backend to get motif count
+    let url = `${this.vimoServer}/count/motif=${motif}`;
+    return (await axios.get(url)).data;
+  };
+
+  getRelativeMotifCount = async (motif) => {
+    // get request to backend to get motif count
+    let url = `${this.vimoServer}/rel_count/motif=${motif}`;
+    return (await axios.get(url)).data;
+  };
 }

@@ -1080,15 +1080,14 @@ function SketchPanel(props) {
     nodes.length > 4
       ? context.setShowWarning(true)
       : context.setShowWarning(false);
+    const count = await attrs.getMotifCount(JSON.stringify(encodedMotif));
+    context.setAbsMotifCount(count);
 
-    // const count = await getMotifCount(JSON.stringify(encodedMotif));
-    // context.setAbsMotifCount(count);
-    //
-    // // get relative count of motif in network
-    // const relative_count = await getRelativeMotifCount(
-    //   JSON.stringify(encodedMotif)
-    // );
-    // context.setRelativeMotifCount(relative_count);
+    // get relative count of motif in network
+    const relative_count = await attrs.getRelativeMotifCount(
+      JSON.stringify(encodedMotif)
+    );
+    context.setRelativeMotifCount(relative_count);
 
     context.setMotifQuery(encodedMotif);
   }, [nodes, edges]);

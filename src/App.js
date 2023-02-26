@@ -25,10 +25,13 @@ function App() {
   };
 
   const [attrs, setAttrs] = useState({});
+
   useEffect(async () => {
     setAttrs({
       NodeFields: await ne.getNodeFields(),
       EdgeFields: await ne.getEdgeFields(),
+      getMotifCount: ne.getMotifCount,
+      getRelativeMotifCount: ne.getRelativeMotifCount,
     });
   }, []);
 
