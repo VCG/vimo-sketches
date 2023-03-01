@@ -13,7 +13,7 @@ import { Color } from "../utils/rendering";
 import Tooltip from "@mui/material/Tooltip";
 
 function MotifPanel(props) {
-  const { isQuerying, processRequest, attrs } = props;
+  const { processRequest, attributes } = props;
   const [number, setNumber] = useState(1);
   const [enableAbsMotifCountInfo, setEnableAbsMotifCountInfo] = useState(false);
   const [countButtonColor, setCountButtonColor] = useState("neutral");
@@ -144,7 +144,13 @@ function MotifPanel(props) {
                 variant="contained"
                 startIcon={<SearchIcon />}
                 onClick={handleSubmit}
-                disabled={cypherLoading || isQuerying}
+                disabled={
+                  cypherLoading ||
+                  (typeof attributes != "undefined" &&
+                    typeof attributes.isQuerying != "undefined")
+                    ? attributes.isQuerying
+                    : false
+                }
               >
                 Search
               </Button>

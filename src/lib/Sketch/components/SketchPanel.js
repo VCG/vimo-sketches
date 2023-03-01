@@ -36,7 +36,7 @@ InitialConfig["settings"]["renderSize"] = "small";
 InitialConfig["settings"]["setOpOnChangeField"] = ["keep", "first"];
 
 function SketchPanel(props) {
-  const { attrs } = props;
+  const { attributes } = props;
   const sketchPanelId = "sketch-panel";
   let [nodes, setNodes] = useState([]);
   let [nodeLabels, setNodeLabels] = useState([]);
@@ -64,20 +64,6 @@ function SketchPanel(props) {
 
   // We track the overall motif in the global context
   const context = useContext(AppContext);
-
-  // TODO
-  // const getMotifCount = async (motif) => {
-  //   // get request to backend to get motif count
-  //   let url = `${vimo_server}/count/motif=${motif}`;
-  //   return (await axios.get(url)).data;
-  // };
-  //
-  // // TODO
-  // const getRelativeMotifCount = async (motif) => {
-  //   // get request to backend to get motif count
-  //   let url = `${vimo_server}/rel_count/motif=${motif}`;
-  //   return (await axios.get(url)).data;
-  // };
 
   const calculateNewPosition = (dimension, position) => {
     let newX = (canvasDimension.width / dimension.width) * position[1];
@@ -1025,9 +1011,9 @@ function SketchPanel(props) {
     }
     // fetch Node and Edge Fields
     if (!NodeFields || !EdgeFields) {
-      if (typeof attrs !== "undefined") {
-        setNodeFields(attrs.NodeFields);
-        setEdgeFields(attrs.EdgeFields);
+      if (typeof attributes !== "undefined") {
+        setNodeFields(attributes.NodeFields);
+        setEdgeFields(attributes.EdgeFields);
       }
     }
     if (nodes.length > 0) {
@@ -1080,14 +1066,24 @@ function SketchPanel(props) {
     nodes.length > 4
       ? context.setShowWarning(true)
       : context.setShowWarning(false);
-    const count = await attrs.getMotifCount(JSON.stringify(encodedMotif));
-    context.setAbsMotifCount(count);
+    if (
+      typeof attributes != "undefined" &&
+      attributes.getMotifCount &&
+      attributes.getRelativeMotifCount
+    ) {
+      console.log(attributes.getMotifCount, attributes.getRelativeMotifCount);
+      const count = await attributes.getMotifCount(
+        JSON.stringify(encodedMotif)
+      );
+      context.setAbsMotifCount(count);
+      console.log(attributes.NodeFields, attributes.EdgeFields, count);
 
-    // get relative count of motif in network
-    const relative_count = await attrs.getRelativeMotifCount(
-      JSON.stringify(encodedMotif)
-    );
-    context.setRelativeMotifCount(relative_count);
+      // get relative count of motif in network
+      const relative_count = await attributes.getRelativeMotifCount(
+        JSON.stringify(encodedMotif)
+      );
+      context.setRelativeMotifCount(relative_count);
+    }
 
     context.setMotifQuery(encodedMotif);
   }, [nodes, edges]);
@@ -1155,7 +1151,7 @@ function SketchPanel(props) {
               QbUtils.loadTree({ id: QbUtils.uuid(), type: "group" }),
               {
                 ...InitialConfig,
-                fields: attrs.NodeFields,
+                fields: attributes.NodeFields,
               }
             );
           }
@@ -1184,7 +1180,7 @@ function SketchPanel(props) {
             QbUtils.loadTree(newTreeJsValue),
             {
               ...InitialConfig,
-              fields: attrs.NodeFields,
+              fields: attributes.NodeFields,
             }
           );
           return renameCircle(
@@ -1321,7 +1317,6 @@ function SketchPanel(props) {
                     {context.selectedSketchElement.label}
                   </span>
                 </Grid>
-
                 <Grid
                   container
                   className="popover-grid"
@@ -1343,13 +1338,37 @@ function SketchPanel(props) {
                     Delete
                   </Button>
                 </Grid>
-
-                {attrs.NodeFields && attrs.EdgeFields ? (
-                  <QueryBuilder
-                    NodeFields={attrs.NodeFields}
-                    EdgeFields={attrs.EdgeFields}
-                  />
+                {typeof attributes != "undefined" ? (
+                  <>
+                    {attributes.NodeFields || attributes.EdgeFields ? (
+                      <QueryBuilder
+                        NodeFields={
+                          attributes.NodeFields ? attributes.NodeFields : {}
+                        }
+                        EdgeFields={
+                          attributes.EdgeFields ? attributes.EdgeFields : {}
+                        }
+                      />
+                    ) : (
+                      // loading
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          height: "70px",
+                          width: "290px",
+                        }}
+                      >
+                        <CircularProgress
+                          size="1.5rem"
+                          style={{ marginTop: "30px" }}
+                        />
+                      </div>
+                    )}
+                  </>
                 ) : (
+                  // general case
                   <div
                     style={{
                       display: "flex",
@@ -1358,12 +1377,7 @@ function SketchPanel(props) {
                       height: "70px",
                       width: "290px",
                     }}
-                  >
-                    <CircularProgress
-                      size="1.5rem"
-                      style={{ marginTop: "30px" }}
-                    />
-                  </div>
+                  ></div>
                 )}
               </Popover>
             )}
