@@ -1,4 +1,6 @@
-import Sketch from "./lib/Sketch";
+import React, { useEffect, useState } from "react";
+import Sketch from "./lib/Sketch/Sketch";
+import NeuprintExecutor from "./lib/Executors/NeuprintExecutor";
 import "./App.css";
 
 function App() {
@@ -6,22 +8,38 @@ function App() {
   const token = "";
   const data_server = "https://neuprint.janelia.org/";
   const data_version = "hemibrain:v1.2.1";
-  const vimo_server = "http://localhost:4242";
-  const isQuerying = false;
-  const processRequest = (query) => {
+  const vimo_server = "http://localhost:4242"; //"https://vimo-server-bmcp5imp6q-uk.a.run.app";
+  const ne = new NeuprintExecutor(
+    data_server,
+    data_version,
+    token,
+    vimo_server
+  );
+
+  const [isQuerying, setIsQuerying] = useState(false);
+  const processRequest = async (motifJson, lim) => {
+    const query = await ne.json2cypher(motifJson, lim);
     console.log(query);
     return query;
   };
+
+  // Example for neuprint
+  const [attributes, setAttributes] = useState({
+    getMotifCount: ne.getMotifCount,
+    getRelativeMotifCount: ne.getRelativeMotifCount,
+  });
+  useEffect(async () => {
+    setAttributes({
+      ...attributes,
+      isQuerying: isQuerying,
+      NodeFields: await ne.getNodeFields(),
+      EdgeFields: await ne.getEdgeFields(),
+    });
+  }, []);
+
   return (
     <div>
-      <Sketch
-        data_server={data_server}
-        data_version={data_version}
-        token={token}
-        vimo_server={vimo_server}
-        isQuerying={isQuerying}
-        processRequest={processRequest}
-      />
+      <Sketch processRequest={processRequest} attributes={attributes} />
     </div>
   );
 }

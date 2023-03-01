@@ -24,9 +24,7 @@ import {
   faHand,
 } from "@fortawesome/free-solid-svg-icons";
 import { Utils as QbUtils } from "react-awesome-query-builder";
-import axios from "axios";
 import MuiConfig from "react-awesome-query-builder/lib/config/mui";
-import { getEdgeFields, getNodeFields } from "../services/data";
 
 let InitialConfig = MuiConfig;
 delete InitialConfig["conjunctions"]["OR"];
@@ -38,7 +36,7 @@ InitialConfig["settings"]["renderSize"] = "small";
 InitialConfig["settings"]["setOpOnChangeField"] = ["keep", "first"];
 
 function SketchPanel(props) {
-  const { data_server, data_version, token, vimo_server } = props;
+  const { attributes } = props;
   const sketchPanelId = "sketch-panel";
   let [nodes, setNodes] = useState([]);
   let [nodeLabels, setNodeLabels] = useState([]);
@@ -66,18 +64,6 @@ function SketchPanel(props) {
 
   // We track the overall motif in the global context
   const context = useContext(AppContext);
-
-  const getMotifCount = async (motif) => {
-    // get request to backend to get motif count
-    let url = `${vimo_server}/count/motif=${motif}`;
-    return (await axios.get(url)).data;
-  };
-
-  const getRelativeMotifCount = async (motif) => {
-    // get request to backend to get motif count
-    let url = `${vimo_server}/rel_count/motif=${motif}`;
-    return (await axios.get(url)).data;
-  };
 
   const calculateNewPosition = (dimension, position) => {
     let newX = (canvasDimension.width / dimension.width) * position[1];
@@ -1025,7 +1011,10 @@ function SketchPanel(props) {
     }
     // fetch Node and Edge Fields
     if (!NodeFields || !EdgeFields) {
-      fetchNodeEdgeFields();
+      if (typeof attributes !== "undefined") {
+        setNodeFields(attributes.NodeFields);
+        setEdgeFields(attributes.EdgeFields);
+      }
     }
     if (nodes.length > 0) {
       const newNodes = [...nodes];
@@ -1039,27 +1028,6 @@ function SketchPanel(props) {
       addExistEdges(newEdges);
     }
   }, []);
-
-  const fetchNodeEdgeFields = async () => {
-    try {
-      const nodeFields = await getNodeFields(
-        vimo_server,
-        data_server,
-        data_version,
-        token
-      );
-      const edgeFields = await getEdgeFields(
-        vimo_server,
-        data_server,
-        data_version,
-        token
-      );
-      setNodeFields(nodeFields);
-      setEdgeFields(edgeFields);
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   const getEncodedMotif = (nodes, edges) => {
     let encodedNodes = nodes.map((n, i) => {
@@ -1098,15 +1066,24 @@ function SketchPanel(props) {
     nodes.length > 4
       ? context.setShowWarning(true)
       : context.setShowWarning(false);
+    if (
+      typeof attributes != "undefined" &&
+      attributes.getMotifCount &&
+      attributes.getRelativeMotifCount
+    ) {
+      console.log(attributes.getMotifCount, attributes.getRelativeMotifCount);
+      const count = await attributes.getMotifCount(
+        JSON.stringify(encodedMotif)
+      );
+      context.setAbsMotifCount(count);
+      console.log(attributes.NodeFields, attributes.EdgeFields, count);
 
-    const count = await getMotifCount(JSON.stringify(encodedMotif));
-    context.setAbsMotifCount(count);
-
-    // get relative count of motif in network
-    const relative_count = await getRelativeMotifCount(
-      JSON.stringify(encodedMotif)
-    );
-    context.setRelativeMotifCount(relative_count);
+      // get relative count of motif in network
+      const relative_count = await attributes.getRelativeMotifCount(
+        JSON.stringify(encodedMotif)
+      );
+      context.setRelativeMotifCount(relative_count);
+    }
 
     context.setMotifQuery(encodedMotif);
   }, [nodes, edges]);
@@ -1174,7 +1151,7 @@ function SketchPanel(props) {
               QbUtils.loadTree({ id: QbUtils.uuid(), type: "group" }),
               {
                 ...InitialConfig,
-                fields: NodeFields,
+                fields: attributes.NodeFields,
               }
             );
           }
@@ -1203,7 +1180,7 @@ function SketchPanel(props) {
             QbUtils.loadTree(newTreeJsValue),
             {
               ...InitialConfig,
-              fields: NodeFields,
+              fields: attributes.NodeFields,
             }
           );
           return renameCircle(
@@ -1340,7 +1317,6 @@ function SketchPanel(props) {
                     {context.selectedSketchElement.label}
                   </span>
                 </Grid>
-
                 <Grid
                   container
                   className="popover-grid"
@@ -1362,13 +1338,37 @@ function SketchPanel(props) {
                     Delete
                   </Button>
                 </Grid>
-
-                {NodeFields && EdgeFields ? (
-                  <QueryBuilder
-                    NodeFields={NodeFields}
-                    EdgeFields={EdgeFields}
-                  />
+                {typeof attributes != "undefined" ? (
+                  <>
+                    {attributes.NodeFields || attributes.EdgeFields ? (
+                      <QueryBuilder
+                        NodeFields={
+                          attributes.NodeFields ? attributes.NodeFields : {}
+                        }
+                        EdgeFields={
+                          attributes.EdgeFields ? attributes.EdgeFields : {}
+                        }
+                      />
+                    ) : (
+                      // loading
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          height: "70px",
+                          width: "290px",
+                        }}
+                      >
+                        <CircularProgress
+                          size="1.5rem"
+                          style={{ marginTop: "30px" }}
+                        />
+                      </div>
+                    )}
+                  </>
                 ) : (
+                  // general case
                   <div
                     style={{
                       display: "flex",
@@ -1377,12 +1377,7 @@ function SketchPanel(props) {
                       height: "70px",
                       width: "290px",
                     }}
-                  >
-                    <CircularProgress
-                      size="1.5rem"
-                      style={{ marginTop: "30px" }}
-                    />
-                  </div>
+                  ></div>
                 )}
               </Popover>
             )}

@@ -17,7 +17,7 @@ InitialConfig["settings"]["canReorder"] = false;
 InitialConfig["settings"]["renderSize"] = "small";
 InitialConfig["settings"]["setOpOnChangeField"] = ["keep", "first"];
 
-function QueryBuilder({NodeFields, EdgeFields}) {
+function QueryBuilder({ NodeFields, EdgeFields }) {
   let [tree, setTree] = useState();
   const context = useContext(AppContext);
 
@@ -77,25 +77,49 @@ function QueryBuilder({NodeFields, EdgeFields}) {
   };
   return (
     <div>
-      {tree && context?.selectedSketchElement?.type === "node" && (
-        <Query
-          {...InitialConfig}
-          fields={NodeFields}
-          value={context.selectedSketchElement.tree || tree}
-          onChange={onChange}
-          renderBuilder={renderBuilder}
-        />
-      )}
+      {tree &&
+        context?.selectedSketchElement?.type === "node" &&
+        (Object.keys(NodeFields).length > 0 ? (
+          <Query
+            {...InitialConfig}
+            fields={NodeFields}
+            value={context.selectedSketchElement.tree || tree}
+            onChange={onChange}
+            renderBuilder={renderBuilder}
+          />
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "45px",
+              width: "290px",
+            }}
+          ></div>
+        ))}
 
-      {tree && context?.selectedSketchElement?.type === "edge" && (
-        <Query
-          {...InitialConfig}
-          fields={EdgeFields}
-          value={context.selectedSketchElement.tree || tree}
-          onChange={onChange}
-          renderBuilder={renderBuilder}
-        />
-      )}
+      {tree &&
+        context?.selectedSketchElement?.type === "edge" &&
+        (Object.keys(EdgeFields).length > 0 ? (
+          <Query
+            {...InitialConfig}
+            fields={EdgeFields}
+            value={context.selectedSketchElement.tree || tree}
+            onChange={onChange}
+            renderBuilder={renderBuilder}
+          />
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "45px",
+              width: "290px",
+            }}
+          ></div>
+        ))}
     </div>
   );
 }
