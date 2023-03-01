@@ -1,34 +1,45 @@
-# vimo-sketches
-A React component of the Vimo Sketching interface.
+[![npm version](https://img.shields.io/npm/v/@vimo-public/vimo-sketches.svg?color=1a8cff&style=flat-square)](https://www.npmjs.com/package/@vimo-public/vimo-sketches)
+[![Demo](https://img.shields.io/badge/demo-running-blue.svg?colorB=4AC8F4)](https://vimo-client-3jagpvnfya-uc.a.run.app/)
 
-## Use Component
-We need a [vimo-server](https://github.com/VCG/vimo-server) to use the [vimo-sketches](https://github.com/VCG/vimo-sketches).
+
+# Vimo Sketches
+A React component for interactively sketching & searching for network motifs.
+
+## Requirements
+* [npm](https://www.npmjs.com/) (8.1.0 or later)
 
 ### Install Package
 `npm install @vimo-public/vimo-sketches`
 
-### Usage
+### Getting Started
 
-#### General Case
+#### Basic Example
 ```javascript
-import { Sketch } from '@vimo-public/vimo-sketches';
+import Sketch from "@vimo-public/vimo-sketches";
+
+function App() {
+    
+    const processRequest = async (motifJson, lim) => {
+        console.log("This function is called upon clicking the search button.");
+    };
+    
+    <Sketch processRequest={processRequest}/>
+}
+export default App;
 ```
 
-```javascript
-<Sketch processRequest={processRequest}/>
-```
-
-If you want to add constraint fields to node or edge, please refer react-awesome-query-builder [config fields](https://github.com/ukrbublik/react-awesome-query-builder/blob/master/CONFIG.adoc#configfields).
+#### Node & Edge Attributes
+If you want to add constraint fields to nodes or edges, please refer react-awesome-query-builder [config fields](https://github.com/ukrbublik/react-awesome-query-builder/blob/master/CONFIG.adoc#configfields). Also here's an example
 
 ````javascript
 const attributes = {
   NodeFields: {
-    name: {
-      label: "Name",
+    node_attr_1: {
+      label: "attr1_name",
       type: "text",
     },
-    type: {
-      label: "type",
+    node_attr_2: {
+      label: "attr2_name",
       type: "select",
       fieldSettings: {
         showSearch: true,
@@ -43,8 +54,8 @@ const attributes = {
     },
   },
   EdgeFields: {
-    weight: {
-      label: "Weight",
+    edge_attr_1: {
+      label: "attr1_name",
       type: "number",
       fieldSettings: {
         min: 0,
@@ -52,8 +63,8 @@ const attributes = {
       valueSources: ["value"],
       preferWidgets: ["number"],
     },
-    "ROI-Example-1": {
-      label: "ROI-Example-1",
+    edge_attr_2: {
+      label: "attr2_name",
       type: "number",
       operators: ["greater", "less", "equal"],
       valueSources: ["value"],
@@ -64,7 +75,7 @@ const attributes = {
 <Sketch processRequest={processRequest} attributes={attributes} />
 ````
 
-#### neuPrint Case
+#### Searching Motifs in NeuPrint
 ```javascript
 import { Sketch, NeuprintExecutor } from '@vimo-public/vimo-sketches';
 
@@ -199,20 +210,4 @@ This component turns motif sketch into JSON. This is an example of the JSON:
     ],
     dimension: { width: 639.3984375, height: 232.796875 },
 };
-```
-
-
-
-
-
-### Ideas Neuprint Executor
-
-```javascript
-// constructor
-ne = NeuprintExecutor(host, dataset, vimo-server, token)
-
-// functions
-nodeFields = ne.getNodeFields(args)
-edgeFields = ne.getEdgeFields(args)
-cypher = ne.json2cypher(json)
 ```
