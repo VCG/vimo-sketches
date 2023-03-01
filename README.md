@@ -35,7 +35,7 @@ export default App;
 ```
 
 #### Node & Edge Attributes
-If you want to add constraint fields to nodes or edges, please refer react-awesome-query-builder [config fields](https://github.com/ukrbublik/react-awesome-query-builder/blob/master/CONFIG.adoc#configfields). Also here's an example
+If you want to add attributes to nodes or edges, please refer react-awesome-query-builder [config fields](https://github.com/ukrbublik/react-awesome-query-builder/blob/master/CONFIG.adoc#configfields). Also here's an example
 
 ````javascript
 const attributes = {
