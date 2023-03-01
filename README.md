@@ -165,7 +165,7 @@ useEffect(async () => {
 
 ### Output
 This component turns motif sketch into JSON. This is an example of the JSON:
-```
+``` javascript
 {
     nodes: [
       {
