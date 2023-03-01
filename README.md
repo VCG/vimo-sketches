@@ -3,7 +3,7 @@
 
 
 # Vimo Sketches
-Interactive sketching & searching for network motifs in React.
+React component for interactively sketching & searching for network motifs.
 
 <p>
   <img src="https://github.com/VCG/vimo-sketches/blob/main/examples/vimo-sketching.gif" />
