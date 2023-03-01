@@ -3,13 +3,15 @@
 
 
 # Vimo Sketches
-A React component for interactively sketching & searching for network motifs.
+Interactive sketching & searching for network motifs in React.
 
 ## Requirements
 * [npm](https://www.npmjs.com/) (8.1.0 or later)
 
 ### Install Package
-`npm install @vimo-public/vimo-sketches`
+``` bash
+npm install @vimo-public/vimo-sketches
+```
 
 ### Getting Started
 
