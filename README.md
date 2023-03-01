@@ -5,7 +5,11 @@
 # Vimo Sketches
 Interactive sketching & searching for network motifs in React.
 
-## Requirements
+<p>
+  <img src="https://github.com/VCG/vimo-sketches/blob/main/examples/vimo-sketching.gif" />
+</p>
+
+### Requirements
 * [npm](https://www.npmjs.com/) (8.1.0 or later)
 
 ### Install Package
