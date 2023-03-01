@@ -26,7 +26,21 @@ const attributes = {
     name: {
       label: "Name",
       type: "text",
-    }
+    },
+    type: {
+      label: "type",
+      type: "select",
+      fieldSettings: {
+        showSearch: true,
+        listValues: [
+          "alpha",
+          "betha",
+          "theta",
+        ],
+      },
+      valueSources: ["value"],
+      operators: ["select_equals", "select_not_equals"],
+    },
   },
   EdgeFields: {
     weight: {
@@ -37,6 +51,12 @@ const attributes = {
       },
       valueSources: ["value"],
       preferWidgets: ["number"],
+    },
+    "ROI-Example-1": {
+      label: "ROI-Example-1",
+      type: "number",
+      operators: ["greater", "less", "equal"],
+      valueSources: ["value"],
     },
   },
 }
