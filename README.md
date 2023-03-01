@@ -73,7 +73,6 @@ useEffect(async () => {
 <Sketch processRequest={processRequest} attributes={attributes}/>
 ```
 
-
 ### Sketch Component Props
 <table>
 <thead>
@@ -126,7 +125,7 @@ useEffect(async () => {
 ### NeuprintExecutor Parameters
 | Name                  | Description                                             | Type     | 
 |-----------------------|---------------------------------------------------------|----------|
-| token                 | neuPrint authentication token                           | String   |
+| token                 | [neuPrint authentication token](https://neuprint.janelia.org/account)                       | String   |
 | data_server           | url of database (e.g., 'https://neuprint.janelia.org/') | String   |
 | data_version          | name and version of dataset (e.g., 'hemibrain:v1.2.1')  | String   |
 | vimo_server           | url of vimo_server (e.g., 'http://localhost:4242')      | String   |
@@ -182,3 +181,18 @@ This component turns motif sketch into JSON. This is an example of the JSON:
 };
 ```
 
+
+
+
+
+### Ideas Neuprint Executor
+
+```javascript
+// constructor
+ne = NeuprintExecutor(host, dataset, vimo-server, token)
+
+// functions
+nodeFields = ne.getNodeFields(args)
+edgeFields = ne.getEdgeFields(args)
+cypher = ne.json2cypher(json)
+```
