@@ -1,5 +1,6 @@
 [![npm version](https://img.shields.io/npm/v/@vimo-public/vimo-sketches.svg?color=1a8cff&style=flat-square)](https://www.npmjs.com/package/@vimo-public/vimo-sketches)
 [![Demo](https://img.shields.io/badge/demo-running-blue.svg?colorB=4AC8F4)](https://vimo-client-3jagpvnfya-uc.a.run.app/)
+[![doi](https://img.shields.io/badge/doi-10.1109%2FTVCG.2017.2745978-purple.svg?colorB=C46CFD)](https://doi.org/10.1101/2022.12.09.519772)
 
 
 # Vimo Sketches
