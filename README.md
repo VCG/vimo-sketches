@@ -82,12 +82,17 @@ const attributes = {
 ````
 
 #### Searching Motifs in NeuPrint
+
+We provide a direct interface to sketch & search for networks motifs in large [connectome](https://en.wikipedia.org/wiki/Connectomics) data sets hosted on [Neuprint](https://neuprint.janelia.org). Here's an example of how to use it.
+
 ```javascript
 import { Sketch, NeuprintExecutor } from '@vimo-public/vimo-sketches';
 
+// the NeuprintExecutor class is used to interact with the Neuprint database
 const ne = new NeuprintExecutor(data_server, data_version, token, vimo_server);
 
 const [isQuerying, setIsQuerying] = useState(false);
+
 const processRequest = async (motifJson, lim) => {
     const query = await ne.json2cypher(motifJson, lim);
     console.log(query);
@@ -95,8 +100,8 @@ const processRequest = async (motifJson, lim) => {
 };
 
 const [attributes, setAttributes] = useState({
-  getMotifCount: ne.getMotifCount,
-  getRelativeMotifCount: ne.getRelativeMotifCount,
+  getMotifCount: ne.getMotifCount, // get count of motif in network
+  getRelativeMotifCount: ne.getRelativeMotifCount, // get relative count of motif in network
 });
 
 useEffect(async () => {
@@ -168,7 +173,7 @@ useEffect(async () => {
 | vimo_server           | url of vimo_server (e.g., 'http://localhost:4242')      | String   |
 
 ### Output
-This component turns motif sketch into JSON. This is an example of the JSON:
+This component turns motif sketch into JSON. This is an example of the JSON. This JSON can be converted to a Cypher query using the `json2cypher` method of the NeuprintExecutor class.
 ``` javascript
 {
     nodes: [
@@ -217,3 +222,21 @@ This component turns motif sketch into JSON. This is an example of the JSON:
     dimension: { width: 639.3984375, height: 232.796875 },
 };
 ```
+
+
+### Citing
+If you find our work helpful, please consider citing it.
+```bibtex
+@article {troidl2022vimo,
+    title={Vimo: Visual Analysis of Neuronal Connectivity Motifs},
+    author={Troidl, Jakob and Warchol, Simon and Choi, Jinhan and Matelsky, Jordan 
+    and Dhanysai, Nagaraju and Wang, Xueying and Wester, Brock and Wei, Donglai 
+    and Lichtman, Jeff W and Pfister, Hanspeter and Beyer, Johanna},
+    year={2022},
+    doi={10.1101/2022.12.09.519772},
+    publisher={Cold Spring Harbor Laboratory},
+    url={https://www.biorxiv.org/content/early/2022/12/11/2022.12.09.519772},
+    journal={bioRxiv}
+}
+```
+
