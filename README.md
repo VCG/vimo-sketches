@@ -22,15 +22,17 @@ npm install @vimo-public/vimo-sketches
 
 #### Basic Example
 ```javascript
-import { Sketch } from "@vimo-public/vimo-sketches";
+import {Sketch} from "@vimo-public/vimo-sketches";
 
 function App() {
-    
     const processRequest = async (motifJson, lim) => {
         console.log("This function is called upon clicking the search button.");
     };
-    
-    <Sketch processRequest={processRequest}/>
+    return (
+        <div>
+            <Sketch processRequest={processRequest}/>
+        </div>
+    );
 }
 export default App;
 ```
