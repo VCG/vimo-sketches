@@ -22,7 +22,7 @@ npm install @vimo-public/vimo-sketches
 
 #### Basic Example
 ```javascript
-import Sketch from "@vimo-public/vimo-sketches";
+import { Sketch } from "@vimo-public/vimo-sketches";
 
 function App() {
     
