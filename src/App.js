@@ -16,7 +16,6 @@ function App() {
     vimo_server
   );
 
-  const [isQuerying, setIsQuerying] = useState(false);
   const processRequest = async (motifJson, lim) => {
     const query = await ne.json2cypher(motifJson, lim);
     console.log(query);
@@ -24,14 +23,15 @@ function App() {
   };
 
   // Example for neuprint
+  const [isQuerying, setIsQuerying] = useState(false);
   const [attributes, setAttributes] = useState({
     getMotifCount: ne.getMotifCount,
     getRelativeMotifCount: ne.getRelativeMotifCount,
+    isQuerying: isQuerying,
   });
   useEffect(async () => {
     setAttributes({
       ...attributes,
-      isQuerying: isQuerying,
       NodeFields: await ne.getNodeFields(),
       EdgeFields: await ne.getEdgeFields(),
     });
