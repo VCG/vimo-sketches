@@ -111,8 +111,7 @@ import React, { useEffect, useState } from "react";
 import {Sketch, NeuprintExecutor} from '@vimo-public/vimo-sketches';
 
 function App() {
-  // Wrap things in context that can use global context
-  const token = "ADD YOUR TOKEN HERE";
+  const token = "ADD YOUR TOKEN HERE"; // copy token from here https://neuprint.janelia.org/account
   const data_server = "https://neuprint.janelia.org/";
   const data_version = "hemibrain:v1.2.1";
   const vimo_server = "http://127.0.0.1:4242"; // setup instructions https://github.com/VCG/vimo-server
@@ -129,7 +128,6 @@ function App() {
     return query;
   };
 
-  // Example for neuprint
   const [isQuerying, setIsQuerying] = useState(false);
   
   const [attributes, setAttributes] = useState({
