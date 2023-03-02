@@ -107,34 +107,53 @@ export default App;
 We provide a direct interface to sketch & search for networks motifs in large [connectome](https://en.wikipedia.org/wiki/Connectomics) data sets hosted on [Neuprint](https://neuprint.janelia.org). Here's an example of how to use it.
 
 ```javascript
-import { Sketch, NeuprintExecutor } from '@vimo-public/vimo-sketches';
+import React, { useEffect, useState } from "react";
+import {Sketch, NeuprintExecutor} from '@vimo-public/vimo-sketches';
 
-// the NeuprintExecutor class is used to interact with the Neuprint database
-const ne = new NeuprintExecutor(data_server, data_version, token, vimo_server);
+function App() {
+  // Wrap things in context that can use global context
+  const token = "ADD YOUR TOKEN HERE";
+  const data_server = "https://neuprint.janelia.org/";
+  const data_version = "hemibrain:v1.2.1";
+  const vimo_server = "ADD YOUR URL HERE"; // setup instructions https://github.com/VCG/vimo-server
+  const ne = new NeuprintExecutor(
+    data_server,
+    data_version,
+    token,
+    vimo_server
+  );
 
-const [isQuerying, setIsQuerying] = useState(false);
-
-const processRequest = async (motifJson, lim) => {
+  const processRequest = async (motifJson, lim) => {
     const query = await ne.json2cypher(motifJson, lim);
     console.log(query);
     return query;
-};
+  };
 
-const [attributes, setAttributes] = useState({
-  getMotifCount: ne.getMotifCount, // get count of motif in network
-  getRelativeMotifCount: ne.getRelativeMotifCount, // get relative count of motif in network
-  isQuerying: isQuerying,
-});
-
-useEffect(async () => {
-  setAttributes({
-    ...attributes,
-    NodeFields: await ne.getNodeFields(),
-    EdgeFields: await ne.getEdgeFields(),
+  // Example for neuprint
+  const [isQuerying, setIsQuerying] = useState(false);
+  
+  const [attributes, setAttributes] = useState({
+    getMotifCount: ne.getMotifCount,
+    getRelativeMotifCount: ne.getRelativeMotifCount,
+    isQuerying: isQuerying,
   });
-}, []);
+  
+  useEffect(async () => {
+    setAttributes({
+      ...attributes,
+      NodeFields: await ne.getNodeFields(),
+      EdgeFields: await ne.getEdgeFields(),
+    });
+  }, []);
 
-<Sketch processRequest={processRequest} attributes={attributes}/>
+  return (
+    <div>
+      <Sketch processRequest={processRequest} attributes={attributes} />
+    </div>
+  );
+}
+
+export default App;
 ```
 
 ### Sketch Component Props
