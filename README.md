@@ -12,6 +12,9 @@ React component for interactively sketching & searching for network motifs.
 
 ### Requirements
 * [npm](https://www.npmjs.com/) (8.1.0 or later)
+* ```"@testing-library/react": "^12.1.3```
+* ```"react": "^17.0.2"```
+* ```"react-dom": "^17.0.2"```
 
 ### Install Package
 ``` bash
