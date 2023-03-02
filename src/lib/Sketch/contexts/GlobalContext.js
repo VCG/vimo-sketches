@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import {NEURON_COLORS, SYNAPSE_COLORS } from "../config/Colors";
+import { NEURON_COLORS, SYNAPSE_COLORS } from "../config/Colors";
 
 export const AppContext = React.createContext(null);
 

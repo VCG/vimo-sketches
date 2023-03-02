@@ -210,8 +210,6 @@ function SketchPanel(props) {
           return renameEdge(newFromNode, newToNode, newNodeIndices, edge);
         });
 
-      console.log(newEdges, newNodes);
-
       // reset edges and nodes
       setEdges(newEdges);
       setNodes(newNodes);
@@ -558,7 +556,6 @@ function SketchPanel(props) {
             e.propertyLabel
           );
         });
-        console.log(newEdges);
 
         setEdges([...newEdges, ...filteredEdges]);
 
@@ -1061,6 +1058,7 @@ function SketchPanel(props) {
   // Encode the Nodes and Edges For Query
   useEffect(async () => {
     let encodedMotif = getEncodedMotif(nodes, edges);
+    context.setMotifQuery(encodedMotif);
 
     // most motif queries fail for n larger than 4, develop heuristics to make more accurate
     nodes.length > 4
@@ -1071,12 +1069,10 @@ function SketchPanel(props) {
       attributes.getMotifCount &&
       attributes.getRelativeMotifCount
     ) {
-      console.log(attributes.getMotifCount, attributes.getRelativeMotifCount);
       const count = await attributes.getMotifCount(
         JSON.stringify(encodedMotif)
       );
       context.setAbsMotifCount(count);
-      console.log(attributes.NodeFields, attributes.EdgeFields, count);
 
       // get relative count of motif in network
       const relative_count = await attributes.getRelativeMotifCount(
@@ -1084,8 +1080,6 @@ function SketchPanel(props) {
       );
       context.setRelativeMotifCount(relative_count);
     }
-
-    context.setMotifQuery(encodedMotif);
   }, [nodes, edges]);
 
   const isObject = (obj) => {

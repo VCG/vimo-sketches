@@ -32,9 +32,7 @@ function MotifPanel(props) {
     context.setErrorMessage(null);
     setCypherLoading(true);
     try {
-      // const query = await getCypherQuery(vimo_server, data_server, data_version, token, context.motifQuery, number)
-      // setCypherQuery(query);
-      processRequest(context.motifQuery, number);
+      await processRequest(context.motifQuery, number);
     } catch (e) {
       console.log(e);
       context.setErrorMessage(e.message);
@@ -147,9 +145,9 @@ function MotifPanel(props) {
                 disabled={
                   cypherLoading ||
                   (typeof attributes != "undefined" &&
-                    typeof attributes.isQuerying != "undefined")
+                  typeof attributes.isQuerying != "undefined"
                     ? attributes.isQuerying
-                    : false
+                    : false)
                 }
               >
                 Search
