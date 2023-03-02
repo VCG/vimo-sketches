@@ -103,11 +103,12 @@ const processRequest = async (motifJson, lim) => {
 const [attributes, setAttributes] = useState({
   getMotifCount: ne.getMotifCount, // get count of motif in network
   getRelativeMotifCount: ne.getRelativeMotifCount, // get relative count of motif in network
+  isQuerying: isQuerying,
 });
 
 useEffect(async () => {
   setAttributes({
-    isQuerying: isQuerying,
+    ...attributes,
     NodeFields: await ne.getNodeFields(),
     EdgeFields: await ne.getEdgeFields(),
   });
