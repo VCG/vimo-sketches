@@ -1,47 +1,16 @@
-import React, { useEffect, useState } from "react";
-import Sketch from "./lib/Sketch/Sketch";
-import NeuprintExecutor from "./lib/Executors/NeuprintExecutor";
-import "./App.css";
+import BasicExample from "./examples/BasicExample";
+import NodeEdgeAttributesExample from "./examples/NodeEdgeAttributesExample";
+import SearchingMotifsInNeuprintExample from "./examples/SearchingMotifsInNeuprintExample";
 
 function App() {
-  // Wrap things in context that can use global context
-  const token = "";
-  const data_server = "https://neuprint.janelia.org/";
-  const data_version = "hemibrain:v1.2.1";
-  const vimo_server = "http://localhost:4242"; //"https://vimo-server-bmcp5imp6q-uk.a.run.app";
-  const ne = new NeuprintExecutor(
-    data_server,
-    data_version,
-    token,
-    vimo_server
-  );
+  // 1. Basic Example
+  return <BasicExample />;
 
-  const processRequest = async (motifJson, lim) => {
-    const query = await ne.json2cypher(motifJson, lim);
-    console.log(query);
-    return query;
-  };
+  // 2. Node & Edge Attributes Example
+  // return <NodeEdgeAttributesExample />;
 
-  // Example for neuprint
-  const [isQuerying, setIsQuerying] = useState(false);
-  const [attributes, setAttributes] = useState({
-    getMotifCount: ne.getMotifCount,
-    getRelativeMotifCount: ne.getRelativeMotifCount,
-    isQuerying: isQuerying,
-  });
-  useEffect(async () => {
-    setAttributes({
-      ...attributes,
-      NodeFields: await ne.getNodeFields(),
-      EdgeFields: await ne.getEdgeFields(),
-    });
-  }, []);
-
-  return (
-    <div>
-      <Sketch processRequest={processRequest} attributes={attributes} />
-    </div>
-  );
+  // 3. Searching Motifs in Neuprint
+  // return <SearchingMotifsInNeuprintExample />;
 }
 
 export default App;

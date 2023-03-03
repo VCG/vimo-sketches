@@ -1,6 +1,6 @@
 {
   "name": "@vimo-public/vimo-sketches",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": false,
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -29,6 +29,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@turf/centroid": "^6.5.0",
     "@turf/turf": "^6.5.0",
+    "@vimo-public/vimo-sketches": "^0.2.2",
     "axios": "^0.26.0",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.21",
