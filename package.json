@@ -48,10 +48,10 @@
     ]
   },
   "devDependencies": {
-    "@babel/cli": "^7.20.7",
-    "@babel/core": "^7.20.12",
-    "@babel/preset-env": "^7.20.2",
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.0",
     "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.20.2",
     "prettier": "^2.7.1"
   },
   "description": "A React component of the Vimo Sketching interface.",
