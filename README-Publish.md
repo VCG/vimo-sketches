@@ -51,13 +51,24 @@ Add some fields that could be a metadata for the package with the following:
 ```
 
 ### Test the package
+#### In the *vimo-sketches* Project
 Build the package 
 
 `npm run build`
 
-To test the package locally, you need to create a new React project and link the package to the new project.
+Pack the package
 
-`npm link ../vimo-sketches/node_modules/react`
+`npm pack`
+
+This will create `.tgz` file in your project's root path.
+
+
+#### In the *test* Project
+To test the package locally, you need to create a new React project. Please install the *vimo-sketches* package to your test project.
+
+`npm install ../vimo-sketches/vimo-public-vimo-sketches-{VERSION}.tgz`
+
+> You need to change the *vimo-sketches* package version number for the package update to take effect in your *test* project. 
 
 ### Publish
 Login to the npm repository
