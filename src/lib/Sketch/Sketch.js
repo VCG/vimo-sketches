@@ -1,19 +1,14 @@
-import React from 'react';
-import PanelView from "./views/PanelView";
+import React from "react";
 import { ContextWrapper } from "./contexts/GlobalContext";
+import MotifPanel from "./components/MotifPanel";
 
 function Sketch(props) {
   // Wrap things in context that can use global context
-  // Props: data_server, data_version, token, isQuerying, processReauest
   return (
     <ContextWrapper>
-      {/*<div style={{marginTop: "500px"}}>*/}
-        <PanelView {...props} />
-        {/*{"abc"}*/}
-      {/*</div>*/}
+      <MotifPanel {...props} />
     </ContextWrapper>
   );
 }
 
 export default Sketch;
-
