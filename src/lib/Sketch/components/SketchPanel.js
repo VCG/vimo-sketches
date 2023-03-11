@@ -482,7 +482,7 @@ function SketchPanel(props) {
         currentPath?.remove();
         currentNode = null;
         currentPath = null;
-      } else if (mouseState == "edit") {
+      } else if (mouseState === "edit") {
         let nodeIntersections = _.findLastIndex(
           nodes.map((n) => {
             return n.circle.contains(event.point);
@@ -668,14 +668,6 @@ function SketchPanel(props) {
         startNode.circle.position
       );
       let tree = "tree" in edge ? edge.tree : null;
-      // let _newEdge = addEdge(
-      //   startNode,
-      //   endNode,
-      //   path,
-      //   edge.properties,
-      //   tree,
-      //   false
-      // );
       let _newEdge = createEdge(
         startNode,
         endNode,
@@ -796,12 +788,6 @@ function SketchPanel(props) {
     propertyLabel.content = labelText;
     e.propertyLabel = propertyLabel;
     return e;
-  };
-
-  const getNodeLocations = () => {
-    return nodes.map((n) => {
-      return { label: n.label, position: n.circle.position };
-    });
   };
 
   useEffect(() => {
@@ -1139,74 +1125,6 @@ function SketchPanel(props) {
       })
     );
   }, [nodes, showInfo, edges]);
-
-  useEffect(() => {
-    if (context.constraintsToAddToSketch) {
-      let newNodes = nodes.map((node, i) => {
-        let nodeTree = "tree" in node ? node.tree : null;
-
-        if (node.label === context.constraintsToAddToSketch.nodeKey) {
-          let newProperties = node.properties ? node.properties : {};
-          newProperties.bodyId = context.constraintsToAddToSketch.bodyId;
-
-          if (!nodeTree) {
-            nodeTree = QbUtils.checkTree(
-              QbUtils.loadTree({ id: QbUtils.uuid(), type: "group" }),
-              {
-                ...InitialConfig,
-                fields: attributes.NodeFields,
-              }
-            );
-          }
-
-          let treeJsValue = QbUtils.getTree(nodeTree);
-          let newChild = treeJsValue.children1 ? treeJsValue.children1 : [];
-          newChild.push({
-            // id: node.tree.get("id"),
-            id: QbUtils.uuid(),
-            properties: {
-              field: "bodyId",
-              operator: "equal",
-              value: [context.constraintsToAddToSketch.bodyId],
-              valueSrc: ["value"],
-              operatorOptions: null,
-              valueType: ["number"],
-            },
-            type: "rule",
-          });
-
-          let newTreeJsValue = {
-            ...treeJsValue,
-            children1: newChild,
-          };
-          let newNodeTree = QbUtils.checkTree(
-            QbUtils.loadTree(newTreeJsValue),
-            {
-              ...InitialConfig,
-              fields: attributes.NodeFields,
-            }
-          );
-          return renameCircle(
-            node.circle,
-            i,
-            newProperties,
-            newNodeTree,
-            node.label
-          );
-        } else {
-          return renameCircle(
-            node.circle,
-            i,
-            node.properties,
-            nodeTree,
-            node.label
-          );
-        }
-      });
-
-      setNodes(newNodes);
-    }
-  }, [context.constraintsToAddToSketch]);
 
   return (
     <div className="sketch-panel-style">
