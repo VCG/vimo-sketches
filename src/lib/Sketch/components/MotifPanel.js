@@ -4,13 +4,16 @@ import { AppContext } from "../contexts/GlobalContext";
 import SketchPanel from "./SketchPanel";
 import SearchIcon from "@mui/icons-material/Search";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
-import Button from "@mui/material/Button";
-import { FormControl, TextField, ThemeProvider } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  TextField,
+  ThemeProvider,
+  Tooltip,
+} from "@mui/material";
 import _ from "lodash";
 import InfoButton from "./InfoButton";
-import { getCypherQuery } from "../services/data";
 import { Color } from "../utils/rendering";
-import Tooltip from "@mui/material/Tooltip";
 
 function MotifPanel(props) {
   const { processRequest, attributes } = props;
@@ -93,14 +96,8 @@ function MotifPanel(props) {
 
   return (
     <div id={motifPanelId}>
-      {/*<div className={classes["motif-panel-div"]}>*/}
-      {/*<div>*/}
-      {/*<Alert severity="error" sx={{position:'absolute'}}>*/}
-      {/*    This is an error alert — <strong>check it out!</strong>*/}
-      {/*</Alert>*/}
       <div className="form">
         <div className="handle">
-          {/*<DragHandleIcon />*/}
           <ThemeProvider theme={Color.theme}>
             <Tooltip title={parseButtonTooltip()} arrow placement="right">
               <span>

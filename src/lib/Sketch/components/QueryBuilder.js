@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../contexts/GlobalContext";
-// import { NodeFields } from "../config/NodeFields";
-// import { EdgeFields } from "../config/EdgeFields";
 import { Builder, Query, Utils as QbUtils } from "react-awesome-query-builder";
 import MuiConfig from "react-awesome-query-builder/lib/config/mui";
 import "react-awesome-query-builder/lib/css/styles.css";
