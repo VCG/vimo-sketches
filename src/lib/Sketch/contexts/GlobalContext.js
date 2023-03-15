@@ -7,8 +7,14 @@ export const AppContext = React.createContext(null);
 // Step 2: Create a ContextWrapper component that has to be the parent of every consumer.
 
 export const ContextWrapper = (props) => {
+  const { attributes } = props;
   const [motifQuery, setMotifQuery] = useState();
-  const [neuronColors, setNeuronColors] = useState(NEURON_COLORS);
+  const [neuronColors, setNeuronColors] = useState(
+    typeof attributes != "undefined" &&
+      typeof attributes.nodeColors != "undefined"
+      ? attributes.nodeColors
+      : NEURON_COLORS
+  );
   const [errorMessage, setErrorMessage] = useState();
   const [selectedSketchElement, setSelectedSketchElement] = useState(null);
 

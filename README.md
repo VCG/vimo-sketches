@@ -172,7 +172,7 @@ export default App;
 <td>Function</td>
 </tr>
 <tr>
-<td rowspan="5">attributes</td>
+<td rowspan="7">attributes</td>
 <td>isQuerying</td>
 <td>enable/disable search button</td>
 <td>Boolean</td>
@@ -196,6 +196,16 @@ export default App;
 <td>getRelativeMotifCount</td>
 <td>get relative count of motif in network</td>
 <td>Function</td>
+</tr>
+<tr>
+<td>buttonText</td>
+<td>text on button, default is "Search"</td>
+<td>String</td>
+</tr>
+<tr>
+<td>nodeColors</td>
+<td>color set for nodes in sketch, default is ["#9400D3", "#DAA520", "#97d0b5", "#76acf3", "#FF6347", "#4C56B3", "#D9C226", "#263DD9",]</td>
+<td>Array</td>
 </tr>
 </tbody>
 </table>

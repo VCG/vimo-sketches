@@ -147,7 +147,10 @@ function MotifPanel(props) {
                     : false)
                 }
               >
-                Search
+                {typeof attributes != "undefined" &&
+                typeof attributes.buttonText != "undefined"
+                  ? attributes.buttonText
+                  : "Search"}
               </Button>
             </FormControl>
           </div>
