@@ -5,7 +5,7 @@ import MotifPanel from "./components/MotifPanel";
 function Sketch(props) {
   // Wrap things in context that can use global context
   return (
-    <ContextWrapper>
+    <ContextWrapper {...props}>
       <MotifPanel {...props} />
     </ContextWrapper>
   );
