@@ -11,8 +11,8 @@ export const ContextWrapper = (props) => {
   const [motifQuery, setMotifQuery] = useState();
   const [neuronColors, setNeuronColors] = useState(
     typeof attributes != "undefined" &&
-      typeof attributes.neuronColors != "undefined"
-      ? attributes.neuronColors
+      typeof attributes.nodeColors != "undefined"
+      ? attributes.nodeColors
       : NEURON_COLORS
   );
   const [errorMessage, setErrorMessage] = useState();
