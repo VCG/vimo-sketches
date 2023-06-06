@@ -131,9 +131,10 @@ function App() {
   const [isQuerying, setIsQuerying] = useState(false);
   
   const [attributes, setAttributes] = useState({
-    getMotifCount: ne.getMotifCount,
-    getRelativeMotifCount: ne.getRelativeMotifCount,
-    isQuerying: isQuerying,
+      displayMotifCount: false,
+      getMotifCount: ne.getMotifCount,
+      getRelativeMotifCount: ne.getRelativeMotifCount,
+      isQuerying: isQuerying,
   });
   
   useEffect(async () => {
