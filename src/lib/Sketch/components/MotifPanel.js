@@ -24,6 +24,7 @@ function MotifPanel(props) {
 
   const motifPanelId = "motif-panel-div";
   const context = useContext(AppContext);
+  const displayMotifCount =  typeof attributes.displayMotifCount != "undefined" ? attributes.displayMotifCount : false
 
   const handleSubmit = () => {
     console.log("handle submit clicked");
@@ -98,18 +99,21 @@ function MotifPanel(props) {
     <div id={motifPanelId}>
       <div className="form">
         <div className="handle">
-          <ThemeProvider theme={Color.theme}>
-            <Tooltip title={parseButtonTooltip()} arrow placement="right">
-              <span>
-                <InfoButton
-                  text={getMotifCountAsString()}
-                  disabled={!enableAbsMotifCountInfo}
-                  color={countButtonColor}
-                  icon={<SearchIcon />}
-                />
-              </span>
-            </Tooltip>
+          {displayMotifCount ? (
+              <ThemeProvider theme={Color.theme}>
+                  <Tooltip title={parseButtonTooltip()} arrow placement="right">
+                    <span>
+                      <InfoButton
+                        text={getMotifCountAsString()}
+                        disabled={!enableAbsMotifCountInfo}
+                        color={countButtonColor}
+                        icon={<SearchIcon />}
+                      />
+                    </span>
+                  </Tooltip>
           </ThemeProvider>
+          ): null}
+
           {context.showWarning ? (
             <InfoButton color="error" icon={<PriorityHighIcon />} />
           ) : null}

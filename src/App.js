@@ -25,6 +25,7 @@ function App() {
   // Example for neuprint
   const [isQuerying, setIsQuerying] = useState(false);
   const [attributes, setAttributes] = useState({
+    displayMotifCount: false,
     getMotifCount: ne.getMotifCount,
     getRelativeMotifCount: ne.getRelativeMotifCount,
     isQuerying: isQuerying,
