@@ -10,6 +10,11 @@ React component for interactively sketching & searching for network motifs.
   <img src="https://github.com/VCG/vimo-sketches/blob/main/examples/vimo-sketching.gif" />
 </p>
 
+
+### Examples
+* Motif analysis in Neuprint. Access [here](https://neuprint.janelia.org/?dataset=manc%3Av1.0&qt=motifquery&q=1)
+* Motif Analysis in Vimo. Access [here](https://github.com/jakobtroidl/neuronal-motifs)
+
 ### Requirements
 * [npm](https://www.npmjs.com/) (8.1.0 or later)
 * ```"@testing-library/react": "^12.1.3```
