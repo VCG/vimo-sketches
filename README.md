@@ -287,16 +287,16 @@ This component turns motif sketch into JSON. This is an example of the JSON. Thi
 ### Citing
 If you find our work helpful, please consider citing it.
 ```bibtex
-@article {troidl2022vimo,
-    title={Vimo: Visual Analysis of Neuronal Connectivity Motifs},
-    author={Troidl, Jakob and Warchol, Simon and Choi, Jinhan and Matelsky, Jordan 
-    and Dhanysai, Nagaraju and Wang, Xueying and Wester, Brock and Wei, Donglai 
-    and Lichtman, Jeff W and Pfister, Hanspeter and Beyer, Johanna},
-    year={2022},
-    doi={10.1101/2022.12.09.519772},
-    publisher={Cold Spring Harbor Laboratory},
-    url={https://www.biorxiv.org/content/early/2022/12/11/2022.12.09.519772},
-    journal={bioRxiv}
+@article {troidl2023vimo,
+	author = {Troidl, Jakob and Warchol, Simon and Choi, Jinhan and Matelsky, Jordan
+    	and Dhanysai, Nagaraju and Wang, Xueying and Wester, Brock and Wei, Donglai
+    	and Lichtman, Jeff W and Pfister, Hanspeter and Beyer, Johanna},
+	title = {Vimo: Visual Analysis of Neuronal Connectivity Motifs},
+	year = {2023},
+	doi = {10.1101/2022.12.09.519772},
+	publisher = {IEEE},
+	URL = {https://www.biorxiv.org/content/10.1101/2022.12.09.519772v2},
+	journal = {IEEE Transactions on Visualization and Computer Graphics (IEEE VIS) (to appear)}
 }
 ```
 We gratefully acknowledge the support from NSF award number IIS-2124179.
