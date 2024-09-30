@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AppContext } from "../contexts/GlobalContext";
+import React, {  useEffect, useState } from "react";
+import useStore from "../contexts/GlobalContext";
 import { Query, Builder, Utils as QbUtils } from '@react-awesome-query-builder/mui';
 import {MuiConfig} from '@react-awesome-query-builder/mui';
 import '@react-awesome-query-builder/mui/css/styles.css';
@@ -18,7 +18,8 @@ InitialConfig["settings"]["setOpOnChangeField"] = ["keep", "first"];
 
 function QueryBuilder({ NodeFields, EdgeFields }) {
   let [tree, setTree] = useState();
-  const context = useContext(AppContext);
+  const {selectedSketchElement,setSelectedSketchElement} = useStore();
+
 
   useEffect(() => {
     const queryValue = { id: QbUtils.uuid(), type: "group" };
@@ -33,8 +34,8 @@ function QueryBuilder({ NodeFields, EdgeFields }) {
   useEffect(() => {
     const queryValue = { id: QbUtils.uuid(), type: "group" };
     if (
-      context.selectedSketchElement &&
-      context.selectedSketchElement.type === "edge"
+      selectedSketchElement &&
+      selectedSketchElement.type === "edge"
     ) {
       setTree(
         QbUtils.checkTree(QbUtils.loadTree(queryValue), {
@@ -50,7 +51,7 @@ function QueryBuilder({ NodeFields, EdgeFields }) {
         })
       );
     }
-  }, [context.selectedSketchElement]);
+  }, [selectedSketchElement]);
 
   const renderBuilder = (props) => (
     <div
@@ -68,21 +69,21 @@ function QueryBuilder({ NodeFields, EdgeFields }) {
     let query = QbUtils.mongodbFormat(immutableTree, config);
     setTree(immutableTree);
     let updatedElem = {
-      ...context.selectedSketchElement,
+      ...selectedSketchElement,
       tree: immutableTree,
       properties: query,
     };
-    context.setSelectedSketchElement(updatedElem);
+    setSelectedSketchElement(updatedElem);
   };
   return (
     <div>
       {tree &&
-        context?.selectedSketchElement?.type === "node" &&
+        selectedSketchElement?.type === "node" &&
         (Object.keys(NodeFields).length > 0 ? (
           <Query
             {...InitialConfig}
             fields={NodeFields}
-            value={context.selectedSketchElement.tree || tree}
+            value={selectedSketchElement.tree || tree}
             onChange={onChange}
             renderBuilder={renderBuilder}
           />
@@ -99,12 +100,12 @@ function QueryBuilder({ NodeFields, EdgeFields }) {
         ))}
 
       {tree &&
-        context?.selectedSketchElement?.type === "edge" &&
+        selectedSketchElement?.type === "edge" &&
         (Object.keys(EdgeFields).length > 0 ? (
           <Query
             {...InitialConfig}
             fields={EdgeFields}
-            value={context.selectedSketchElement.tree || tree}
+            value={selectedSketchElement.tree || tree}
             onChange={onChange}
             renderBuilder={renderBuilder}
           />

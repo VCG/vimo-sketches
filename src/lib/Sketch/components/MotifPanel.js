@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import "./MotifPanel.css";
-import { AppContext } from "../contexts/GlobalContext";
 import SketchPanel from "./SketchPanel";
 import SearchIcon from "@mui/icons-material/Search";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
@@ -14,6 +13,7 @@ import {
 import _ from "lodash";
 import InfoButton from "./InfoButton";
 import { Color } from "../utils/rendering";
+import useStore from "../contexts/GlobalContext";
 
 function MotifPanel(props) {
   const { processRequest, attributes } = props;
@@ -21,9 +21,9 @@ function MotifPanel(props) {
   const [enableAbsMotifCountInfo, setEnableAbsMotifCountInfo] = useState(false);
   const [countButtonColor, setCountButtonColor] = useState("neutral");
   const [cypherLoading, setCypherLoading] = useState(false);
+  const {setErrorMessage,motifQuery,showWarning,absMotifCount,relativeMotifCount} = useStore();
 
   const motifPanelId = "motif-panel-div";
-  const context = useContext(AppContext);
   const displayMotifCount =  typeof attributes.displayMotifCount != "undefined" ? attributes.displayMotifCount : false
 
   const handleSubmit = () => {
@@ -33,21 +33,21 @@ function MotifPanel(props) {
 
   const fetchMotifs = async () => {
     console.log("Fetch Motifs");
-    context.setErrorMessage(null);
+    setErrorMessage(null);
     setCypherLoading(true);
     try {
-      await processRequest(context.motifQuery, number);
+      await processRequest(motifQuery, number);
     } catch (e) {
       console.log(e);
-      context.setErrorMessage(e.message);
+      setErrorMessage(e.message);
     } finally {
       setCypherLoading(false);
     }
   };
 
   const getMotifCountAsString = () => {
-    if (context.absMotifCount) {
-      return context.absMotifCount.toLocaleString();
+    if (absMotifCount) {
+      return absMotifCount.toLocaleString();
     } else {
       return "N/A";
     }
@@ -70,7 +70,7 @@ function MotifPanel(props) {
   };
 
   useEffect(() => {
-    let relCount = context.relativeMotifCount;
+    let relCount = relativeMotifCount;
     if (relCount >= 2.0) {
       setCountButtonColor("stronger");
     } else if (relCount > 0.5 && relCount < 2.0) {
@@ -84,16 +84,16 @@ function MotifPanel(props) {
     } else {
       setCountButtonColor("neutral");
     }
-  }, [context.relativeMotifCount]);
+  }, [relativeMotifCount]);
 
   // catch change in context absmotifcount
   useEffect(() => {
-    if (context.absMotifCount == null || context.absMotifCount <= 0) {
+    if (absMotifCount == null || absMotifCount <= 0) {
       setEnableAbsMotifCountInfo(false);
     } else {
       setEnableAbsMotifCountInfo(true);
     }
-  }, [context.absMotifCount]);
+  }, [absMotifCount]);
 
   return (
     <div id={motifPanelId}>
@@ -114,7 +114,7 @@ function MotifPanel(props) {
           </ThemeProvider>
           ): null}
 
-          {context.showWarning ? (
+          {showWarning ? (
             <InfoButton color="error" icon={<PriorityHighIcon />} />
           ) : null}
         </div>

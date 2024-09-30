@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import "./SketchPanel.css";
 import QueryBuilder from "./QueryBuilder";
 import CircleTwoToneIcon from "@mui/icons-material/CircleTwoTone";
@@ -7,7 +7,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import InfoIcon from "@mui/icons-material/Info";
 import paper from "paper";
-import { AppContext } from "../contexts/GlobalContext";
+import useStore from "../contexts/GlobalContext";
 import _ from "lodash";
 import {
   Grid,
@@ -63,7 +63,7 @@ function SketchPanel(props) {
   const [EdgeFields, setEdgeFields] = useState(null);
 
   // We track the overall motif in the global context
-  const context = useContext(AppContext);
+  const {selectedSketchElement,setSelectedSketchElement,setErrorMessage, neuronColors, setMotifQuery} = useStore();
 
   const calculateNewPosition = (dimension, position) => {
     let newX = (canvasDimension.width / dimension.width) * position[1];
@@ -138,25 +138,25 @@ function SketchPanel(props) {
   const deleteSketchElement = () => {
     // edges
     if (
-      context.selectedSketchElement &&
-      context.selectedSketchElement.type === "edge"
+      selectedSketchElement &&
+      selectedSketchElement.type === "edge"
     ) {
       let newEdges = edges.filter(
-        (edge) => edge.label !== context.selectedSketchElement.label
+        (edge) => edge.label !== selectedSketchElement.label
       );
-      context.selectedSketchElement.edgeLine.remove();
-      context.selectedSketchElement.lineGroup.remove();
-      context.selectedSketchElement.propertyLabel?.remove();
-      context.setSelectedSketchElement(null);
+      selectedSketchElement.edgeLine.remove();
+      selectedSketchElement.lineGroup.remove();
+      selectedSketchElement.propertyLabel?.remove();
+      setSelectedSketchElement(null);
       setEdges(newEdges);
     }
     // nodes
     if (
-      context.selectedSketchElement &&
-      context.selectedSketchElement.type === "node"
+      selectedSketchElement &&
+      selectedSketchElement.type === "node"
     ) {
       // find adjacent edges
-      let nodeLabel = context.selectedSketchElement.label;
+      let nodeLabel = selectedSketchElement.label;
       let adjacentEdges = edges.filter((edge) => {
         if (
           edge.fromNode.label === nodeLabel ||
@@ -174,10 +174,10 @@ function SketchPanel(props) {
       });
 
       // delete node from canvas
-      const selectedNodeLabel = context.selectedSketchElement.label;
-      context.selectedSketchElement.circle.remove();
-      context.selectedSketchElement.circleGroup.remove();
-      context.setSelectedSketchElement(null);
+      const selectedNodeLabel = selectedSketchElement.label;
+      selectedSketchElement.circle.remove();
+      selectedSketchElement.circleGroup.remove();
+      setSelectedSketchElement(null);
 
       // delete node and rename remaining nodes
       let newNodes = nodes
@@ -240,7 +240,7 @@ function SketchPanel(props) {
     tree = null,
     previousLabel
   ) => {
-    circle.fillColor = context.neuronColors[index];
+    circle.fillColor = neuronColors[index];
     let textPoint = [circle.position.x, circle.position.y + 7];
     let label = new paper.PointText({
       point: textPoint,
@@ -280,7 +280,7 @@ function SketchPanel(props) {
     let circle = new paper.Path.Circle(point, circleRadius);
     circle.strokeColor = "#000000";
     circle.strokeWidth = 3;
-    circle.fillColor = context.neuronColors[node.index];
+    circle.fillColor = neuronColors[node.index];
     circle.opacity = 1.0;
     circle.position = point;
 
@@ -339,12 +339,12 @@ function SketchPanel(props) {
       let point = new paper.Point(event.point);
       testCircle.position = point;
       if (mouseState === "node") {
-        if (context.selectedSketchElement)
-          context.setSelectedSketchElement(null);
+        if (selectedSketchElement)
+          setSelectedSketchElement(null);
         let numNodes = nodes?.length || 0;
         let color =
-          numNodes <= context.neuronColors.length
-            ? context.neuronColors[numNodes]
+          numNodes <= neuronColors.length
+            ? neuronColors[numNodes]
             : "#000000";
         // Create new Circle
         if (!currentPath) {
@@ -358,8 +358,8 @@ function SketchPanel(props) {
           currentPath.position = point;
         }
       } else if (mouseState === "edge") {
-        if (context.selectedSketchElement)
-          context.setSelectedSketchElement(null);
+        if (selectedSketchElement)
+          setSelectedSketchElement(null);
         if (!currentPath) {
           currentPath = new paper.Path();
           currentPath.strokeColor = "#000000";
@@ -498,7 +498,7 @@ function SketchPanel(props) {
         );
         // select the clicked on element and show the popper
         if (nodeIntersections !== -1 || edgeIntersections !== -1) {
-          context.setSelectedSketchElement(currentSelection);
+          setSelectedSketchElement(currentSelection);
           let selectedElement =
             currentSelection?.lineGroup || currentSelection?.circle;
           paper.project.activeLayer.selected = false;
@@ -507,7 +507,7 @@ function SketchPanel(props) {
         } else {
           // If they click out, make the popper go away
           setShowPopper(false);
-          context.setSelectedSketchElement(null);
+          setSelectedSketchElement(null);
           setPopperLocation(null);
         }
       } else if (mouseState === "move") {
@@ -843,13 +843,13 @@ function SketchPanel(props) {
           );
           newEdges.push(newEdge);
         });
-        context.setErrorMessage(null);
-        // context.setLoadingMessage(null);
+        setErrorMessage(null);
+        // setLoadingMessage(null);
       } catch (TypeError) {
-        context.setErrorMessage(
+        setErrorMessage(
           "The motif can't import. Please try again in a larger window."
         );
-        // context.setLoadingMessage(null);
+        // setLoadingMessage(null);
         clearSketch();
       }
 
@@ -916,11 +916,11 @@ function SketchPanel(props) {
   }, [mouseState]);
 
   useEffect(() => {
-    // if context.selectedSketchElement is not null
-    if (context.selectedSketchElement) {
+    // if selectedSketchElement is not null
+    if (selectedSketchElement) {
       let paperElement =
-        context.selectedSketchElement?.circle ||
-        context?.selectedSketchElement?.edgeLine;
+        selectedSketchElement?.circle ||
+        selectedSketchElement?.edgeLine;
       // Calculate where on screen coordinates the popper should go
       let position = paperElement.getPosition();
       let boundingRect = paper.view.element.getBoundingClientRect();
@@ -930,19 +930,19 @@ function SketchPanel(props) {
           left: position.x + boundingRect.left - 30,
         });
       }
-      if (context.selectedSketchElement.type === "edge") {
+      if (selectedSketchElement.type === "edge") {
         setEdges(
           edges.map((e) => {
             // Update the edge with the query properties
-            if (_.isEqual(e.edgeLine, context.selectedSketchElement.edgeLine)) {
-              e.tree = context.selectedSketchElement.tree;
-              e.properties = context.selectedSketchElement.properties;
+            if (_.isEqual(e.edgeLine, selectedSketchElement.edgeLine)) {
+              e.tree = selectedSketchElement.tree;
+              e.properties = selectedSketchElement.properties;
               e = addEdgePropertyLabel(e);
             }
             if (
               e.fromNode.label ===
-                context.selectedSketchElement.fromNode.label &&
-              e.toNode.label === context.selectedSketchElement.toNode.label
+                selectedSketchElement.fromNode.label &&
+              e.toNode.label === selectedSketchElement.toNode.label
             ) {
               e.edgeLine.strokeColor = "red";
               e.lineGroup.children[0].strokeColor = "red";
@@ -956,10 +956,10 @@ function SketchPanel(props) {
       } else {
         setNodes(
           nodes.map((n) => {
-            if (_.isEqual(n.circle, context.selectedSketchElement.circle)) {
+            if (_.isEqual(n.circle, selectedSketchElement.circle)) {
               // Update the node with the query properties
-              n.tree = context.selectedSketchElement.tree;
-              n.properties = context.selectedSketchElement.properties;
+              n.tree = selectedSketchElement.tree;
+              n.properties = selectedSketchElement.properties;
             }
             return n;
           })
@@ -975,7 +975,7 @@ function SketchPanel(props) {
         })
       );
     }
-  }, [context.selectedSketchElement]);
+  }, [selectedSketchElement]);
 
   // On init set up our paperjs
   useEffect(() => {
@@ -1053,12 +1053,12 @@ function SketchPanel(props) {
   // Encode the Nodes and Edges For Query
   useEffect( () => {
     let encodedMotif = getEncodedMotif(nodes, edges);
-    context.setMotifQuery(encodedMotif);
+    setMotifQuery(encodedMotif);
 
     // most motif queries fail for n larger than 4, develop heuristics to make more accurate
     // nodes.length > 4
-    //   ? context.setShowWarning(true)
-    //   : context.setShowWarning(false);
+    //   ? setShowWarning(true)
+    //   : setShowWarning(false);
     // if (
     //   typeof attributes != "undefined" &&
     //   attributes.getMotifCount &&
@@ -1067,13 +1067,13 @@ function SketchPanel(props) {
     //   const count = await attributes.getMotifCount(
     //     JSON.stringify(encodedMotif)
     //   );
-    //   context.setAbsMotifCount(count);
+    //   setAbsMotifCount(count);
 
     //   // get relative count of motif in network
     //   const relative_count = await attributes.getRelativeMotifCount(
     //     JSON.stringify(encodedMotif)
     //   );
-    //   context.setRelativeMotifCount(relative_count);
+    //   setRelativeMotifCount(relative_count);
     // }
   }, [nodes, edges]);
 
@@ -1202,7 +1202,7 @@ function SketchPanel(props) {
             style={{ cursor: cursor || "crosshair" }}
           >
             <canvas id={sketchPanelId} resize="true"></canvas>
-            {showPopper && popperLocation && context.selectedSketchElement && (
+            {showPopper && popperLocation && selectedSketchElement && (
               <Popover
                 anchorReference="anchorPosition"
                 open={true}
@@ -1234,8 +1234,8 @@ function SketchPanel(props) {
                       color: "#454545",
                     }}
                   >
-                    {_.capitalize(context.selectedSketchElement.type)}{" "}
-                    {context.selectedSketchElement.label}
+                    {_.capitalize(selectedSketchElement.type)}{" "}
+                    {selectedSketchElement.label}
                   </span>
                 </Grid>
                 <Grid
