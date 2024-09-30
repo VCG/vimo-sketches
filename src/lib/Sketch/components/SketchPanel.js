@@ -23,8 +23,8 @@ import {
   faFileImport,
   faHand,
 } from "@fortawesome/free-solid-svg-icons";
-import { Utils as QbUtils } from "react-awesome-query-builder";
-import MuiConfig from "react-awesome-query-builder/lib/config/mui";
+import {Utils as QbUtils } from '@react-awesome-query-builder/mui';
+import { MuiConfig } from '@react-awesome-query-builder/mui';
 
 let InitialConfig = MuiConfig;
 delete InitialConfig["conjunctions"]["OR"];
@@ -1051,30 +1051,30 @@ function SketchPanel(props) {
     };
   };
   // Encode the Nodes and Edges For Query
-  useEffect(async () => {
+  useEffect( () => {
     let encodedMotif = getEncodedMotif(nodes, edges);
     context.setMotifQuery(encodedMotif);
 
     // most motif queries fail for n larger than 4, develop heuristics to make more accurate
-    nodes.length > 4
-      ? context.setShowWarning(true)
-      : context.setShowWarning(false);
-    if (
-      typeof attributes != "undefined" &&
-      attributes.getMotifCount &&
-      attributes.getRelativeMotifCount
-    ) {
-      const count = await attributes.getMotifCount(
-        JSON.stringify(encodedMotif)
-      );
-      context.setAbsMotifCount(count);
+    // nodes.length > 4
+    //   ? context.setShowWarning(true)
+    //   : context.setShowWarning(false);
+    // if (
+    //   typeof attributes != "undefined" &&
+    //   attributes.getMotifCount &&
+    //   attributes.getRelativeMotifCount
+    // ) {
+    //   const count = await attributes.getMotifCount(
+    //     JSON.stringify(encodedMotif)
+    //   );
+    //   context.setAbsMotifCount(count);
 
-      // get relative count of motif in network
-      const relative_count = await attributes.getRelativeMotifCount(
-        JSON.stringify(encodedMotif)
-      );
-      context.setRelativeMotifCount(relative_count);
-    }
+    //   // get relative count of motif in network
+    //   const relative_count = await attributes.getRelativeMotifCount(
+    //     JSON.stringify(encodedMotif)
+    //   );
+    //   context.setRelativeMotifCount(relative_count);
+    // }
   }, [nodes, edges]);
 
   const isObject = (obj) => {

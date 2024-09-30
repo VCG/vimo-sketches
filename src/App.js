@@ -30,12 +30,15 @@ function App() {
     getRelativeMotifCount: ne.getRelativeMotifCount,
     isQuerying: isQuerying,
   });
-  useEffect(async () => {
-    setAttributes({
-      ...attributes,
-      NodeFields: await ne.getNodeFields(),
-      EdgeFields: await ne.getEdgeFields(),
-    });
+  useEffect( () => {
+    async function getNodeAttribute() {
+      setAttributes({
+        ...attributes,
+        NodeFields: await ne.getNodeFields(),
+        EdgeFields: await ne.getEdgeFields(),
+      });
+    }
+    getNodeAttribute();
   }, []);
 
   return (

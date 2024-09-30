@@ -14,11 +14,17 @@
     "url": "git+https://github.com/VCG/vimo-sketches.git"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@mui/base": "^5.0.0-beta.58",
+    "@mui/x-date-pickers": "^7.18.0",
+    "@react-awesome-query-builder/mui": "^6.6.3",
     "axios": "^0.26.0",
     "paper": "^0.12.15",
-    "react": "^17.0.2",
-    "react-awesome-query-builder": "^5.1.2",
-    "react-dom": "^17.0.0",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
